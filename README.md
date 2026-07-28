@@ -4,3 +4,4 @@
 # Guntur Syabudi Al Azizy (15)
 # Tiara Putri Ayudia (31)
 # Balqis Nahwan (8)
+# Syifa Rista Febriani (29)
