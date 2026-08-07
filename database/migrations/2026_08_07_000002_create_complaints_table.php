@@ -8,18 +8,13 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('item_reports', function (Blueprint $table) {
+        Schema::create('complaints', function (Blueprint $table) {
             $table->string('id', 36)->primary();
             $table->string('user_id', 36);
             $table->string('status_id', 36);
-            $table->string('jenis_laporan', 10);
-            $table->string('nama_barang', 100);
-            $table->string('kategori_barang', 100)->nullable();
-            $table->string('merek', 100)->nullable();
-            $table->string('warna', 50)->nullable();
-            $table->text('ciri_ciri')->nullable();
+            $table->string('judul', 150);
+            $table->text('deskripsi');
             $table->string('lokasi', 100)->nullable();
-            $table->date('tanggal')->nullable();
             $table->string('foto', 255)->nullable();
             $table->boolean('is_anonymous')->default(false);
             $table->timestamp('created_at')->nullable();
@@ -35,6 +30,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('item_reports');
+        Schema::dropIfExists('complaints');
     }
 };
