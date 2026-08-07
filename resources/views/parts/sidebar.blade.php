@@ -24,8 +24,11 @@
 						</ul>
 					</li>
 				@else
-					<li class="sidebar-item {{ $menu->routing == $route ? 'active' : '' }}">
-						<a href="{{ route($menu->routing) }}" class='sidebar-link'>
+@php
+                        $hasRoute = $menu->routing && $menu->routing !== 'no' && Route::has($menu->routing);
+                    @endphp
+                    <li class="sidebar-item {{ $hasRoute && $menu->routing == $route ? 'active' : '' }}">
+                        <a href="{{ $hasRoute ? route($menu->routing) : '#' }}" class='sidebar-link{{ $hasRoute ? '' : ' disabled' }}'>
 							<i class="fa {{ $menu->icon }}"></i> <span>{{ $menu->menu }}</span>
 						</a>
 					</li>
