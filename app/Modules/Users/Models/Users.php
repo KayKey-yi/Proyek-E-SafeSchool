@@ -2,29 +2,21 @@
 
 namespace App\Modules\Users\Models;
 
-use App\Helpers\Format;
 use App\Helpers\UsesUuid;
 use App\Modules\Role\Models\Role;
-use Illuminate\Database\Eloquent\Model;
 use App\Modules\UserRole\Models\UserRole;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Users extends Model
 {
 	use SoftDeletes;
 	use UsesUuid;
 
+	protected $casts      = ['deleted_at' => 'datetime', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 	protected $table      = 'users';
 	protected $fillable   = ['*'];
-
-	protected function createdAt(): Attribute
-    {
-        return Attribute::make(
-            function($value){
-				return Format::tanggal($value);
-			});
-    }
 
 	public function roleuser()
 	{

@@ -8,8 +8,8 @@ Route::controller(UsersController::class)->middleware(['web','auth'])->name('use
 	Route::get('/users/data', 'data')->name('data.index');
 	Route::get('/users/create', 'create')->name('create');
 	Route::post('/users', 'store')->name('store');
-	Route::get('/users/{user}', 'show')->name('show');
-	Route::get('/users/{user}/edit', 'edit')->name('edit');
-	Route::patch('/users/{user}', 'update')->name('update');
-	Route::get('/users/{user}/delete', 'destroy')->name('destroy');
+	Route::get('/users/{users}', 'show')->name('show');
+	Route::get('/users/{users}/edit', 'edit')->name('edit');
+	Route::patch('/users/{users}', 'update')->name('update');
+	Route::get('/users/{users}/delete', 'destroy')->name('destroy');
 });

@@ -35,7 +35,7 @@
                         </form>
                     </div>
                     <div class="col-12 col-md-3 text-md-end">
-                        <a href="{{ route('users.create') }}" class="btn btn-sm btn-primary icon icon-left"><i class="fa fa-plus"></i> Tambah {{ $title }}</a>
+						{!! button('users.create', $title) !!}
                     </div>
                 </div>
                 @include('include.flash')
@@ -44,10 +44,14 @@
                         <thead>
                             <tr>
                                 <th width="15">No</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Kode Identitas</th>
-                                <th>Role</th>
+                                <td>Name</td>
+								<td>Username</td>
+								<td>Email</td>
+								<td>Email Verified At</td>
+								<td>Password</td>
+								<td>Identitas</td>
+								<td>Remember Token</td>
+								
                                 <th width="20%">Aksi</th>
                             </tr>
                         </thead>
@@ -57,17 +61,22 @@
                                 <tr>
                                     <td>{{ $no++ }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->email }}</td>
-                                    <td>{{ $item->identitas }}</td>
-                                    <td>{{ @$item->roleuser->sortBy('role')->pluck('role')->implode(', ') }}</td>
+									<td>{{ $item->username }}</td>
+									<td>{{ $item->email }}</td>
+									<td>{{ $item->email_verified_at }}</td>
+									<td>{{ $item->password }}</td>
+									<td>{{ $item->identitas }}</td>
+									<td>{{ $item->remember_token }}</td>
+									
                                     <td>
-                                        {!! button('users.edit', $title, ['user' => $item->id]) !!}
-                                        {!! button('users.destroy', $title, ['user' => $item->id]) !!}
+										{!! button('users.show','', $item->id) !!}
+										{!! button('users.edit', $title, $item->id) !!}
+                                        {!! button('users.destroy', $title, $item->id) !!}
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center"><i>No data.</i></td>
+                                    <td colspan="9" class="text-center"><i>No data.</i></td>
                                 </tr>
                             @endforelse
                         </tbody>
