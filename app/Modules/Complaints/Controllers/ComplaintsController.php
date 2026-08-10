@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Modules\Log\Models\Log;
 use App\Modules\Complaints\Models\Complaints;
 use App\Modules\Users\Models\Users;
-use App\Modules\ReportStatuses\Models\ReportStatuses;
+use App\Modules\report_statuses\Models\report_statuses as ReportStatuses;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;

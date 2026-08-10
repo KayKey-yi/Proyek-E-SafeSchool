@@ -2,11 +2,12 @@
 namespace App\Modules\Item_reports\Controllers;
 
 use App\Helpers\Logger;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Modules\Log\Models\Log;
 use App\Modules\Item_reports\Models\Item_reports;
 use App\Modules\Users\Models\Users;
-use App\Modules\ReportStatuses\Models\ReportStatuses;
+use App\Modules\report_statuses\Models\report_statuses as ReportStatuses;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -88,8 +89,7 @@ class Item_reportsController extends Controller
 		$item_reports->warna = $request->input("warna");
 		$item_reports->ciri_ciri = $request->input("ciri_ciri");
 		$item_reports->lokasi = $request->input("lokasi");
-		$item_reports->tanggal = $request->input("tanggal");
-		$item_reports->foto = $request->input("foto");
+		$item_reports->tanggal = Carbon::createFromFormat('d/m/Y', $request->input("tanggal"))->format('Y-m-d');
 		$item_reports->is_anonymous = $request->input("is_anonymous");
 		
 		$item_reports->created_by = Auth::id();
@@ -165,8 +165,7 @@ class Item_reportsController extends Controller
 		$item_reports->warna = $request->input("warna");
 		$item_reports->ciri_ciri = $request->input("ciri_ciri");
 		$item_reports->lokasi = $request->input("lokasi");
-		$item_reports->tanggal = $request->input("tanggal");
-		$item_reports->foto = $request->input("foto");
+		$item_reports->tanggal = Carbon::createFromFormat('d/m/Y', $request->input("tanggal"))->format('Y-m-d');
 		$item_reports->is_anonymous = $request->input("is_anonymous");
 		
 		$item_reports->updated_by = Auth::id();
