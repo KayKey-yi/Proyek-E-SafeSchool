@@ -30,54 +30,23 @@
         }
 
         .logo-circle {
-         .logo-circle {
-         width: 190px;
-         height: 190px;
-         border-radius: 50%;
-         background-color: #ffffff;
-         border: 6px solid #dfe6e8;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         overflow: hidden;
-         margin-bottom: 45px;
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 6px solid #dfe6e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 45px;
         }
 
         .logo-circle img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          padding: 10px;
-        }
-        }
-
-        .logo-icon {
-            font-size: 34px;
-            color: #2f8fd6;
-            line-height: 1;
-        }
-
-        .logo-title {
-            color: #1f6fb2;
-            font-weight: 800;
-            font-size: 20px;
-            letter-spacing: 1px;
-            margin-top: 4px;
-        }
-
-        .logo-subtitle {
-            color: #2f8fd6;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-top: 2px;
-        }
-
-        .logo-caption {
-            color: #333;
-            font-size: 7px;
-            letter-spacing: 1px;
-            margin-top: 3px;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
         }
 
         form {
@@ -97,8 +66,9 @@
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            color: #ffffff;
-            font-size: 18px;
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
             pointer-events: none;
         }
 
@@ -113,6 +83,15 @@
             font-size: 15px;
         }
 
+        .input-group input:-webkit-autofill,
+        .input-group input:-webkit-autofill:hover,
+        .input-group input:-webkit-autofill:focus,
+        .input-group input:-webkit-autofill:active {
+           -webkit-box-shadow: 0 0 0 1000px #a8a4ea inset !important;
+           -webkit-text-fill-color: #ffffff !important;
+           caret-color: #ffffff;
+           transition: background-color 5000s ease-in-out 0s;
+}
         .input-group input::placeholder {
             color: #f0eefc;
         }
@@ -147,7 +126,7 @@
     <div class="login-container">
 
         <div class="logo-circle">
-           <img src="{{ asset('images/logo-esafe.png') }}" alt="E-SAFE School">
+            <img src="{{ asset('images/logo-esafe.png') }}" alt="E-SAFE School Logo">
         </div>
 
         @if ($errors->any())
@@ -160,12 +139,12 @@
             @csrf
 
             <div class="input-group">
-                <span class="icon">&#128100;</span>
+                <img src="{{ asset('images/icon-user.png') }}" alt="Username" class="icon">
                 <input type="text" name="username" placeholder="Username" required autofocus>
             </div>
 
             <div class="input-group">
-                <span class="icon">&#128274;</span>
+                <img src="{{ asset('images/icon-lock.png') }}" alt="Password" class="icon">
                 <input type="password" name="password" placeholder="Password" required>
             </div>
 
