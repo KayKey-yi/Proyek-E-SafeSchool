@@ -10,6 +10,7 @@ use App\Modules\report_statuses\Models\report_statuses as ReportStatuses;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ComplaintsController extends Controller
 {
@@ -53,6 +54,60 @@ class ComplaintsController extends Controller
 
 		$this->log($request, 'membuka form tambah '.$this->title);
 		return view('Complaints::complaints_create', array_merge($data, ['title' => $this->title]));
+	}
+
+	public function userCreate()
+	{
+		return view('user.pengaduan.create');
+	}
+
+	public function userIndex()
+	{
+		$reports = Complaints::query()
+			->where('user_id', Auth::id())
+			->latest('created_at')
+			->get();
+		$statuses = ReportStatuses::query()
+			->whereIn('id', $reports->pluck('status_id'))
+			->get()
+			->keyBy('id');
+
+		return view('user.pengaduan.index', compact('reports', 'statuses'));
+	}
+
+	public function userSuccess()
+	{
+		return view('user.pengaduan.success');
+	}
+
+	public function userStore(Request $request)
+	{
+		$data = $request->validate([
+			'kategori' => ['required', 'string', 'max:150'],
+			'lokasi' => ['required', 'string', 'max:100'],
+			'waktu' => ['required', 'date'],
+			'deskripsi' => ['required', 'string', 'max:500'],
+			'bukti' => ['nullable', 'file', 'mimes:png,jpg,jpeg', 'max:5120'],
+			'anonim' => ['nullable', 'boolean'],
+		]);
+
+		$status = ReportStatuses::query()->first();
+		if (! $status) {
+			return back()->withInput()->withErrors(['kategori' => 'Status pengaduan belum tersedia.']);
+		}
+
+		$complaint = new Complaints();
+		$complaint->user_id = Auth::id();
+		$complaint->status_id = $status->id;
+		$complaint->judul = $data['kategori'];
+		$complaint->deskripsi = "Waktu kejadian: {$data['waktu']}\n\n{$data['deskripsi']}";
+		$complaint->lokasi = $data['lokasi'];
+		$complaint->foto = $request->hasFile('bukti') ? $request->file('bukti')->store('complaints', 'public') : null;
+		$complaint->is_anonymous = $request->boolean('anonim');
+		$complaint->created_by = Auth::id();
+		$complaint->save();
+
+		return redirect()->route('complaints.user.success');
 	}
 
 	function store(Request $request)

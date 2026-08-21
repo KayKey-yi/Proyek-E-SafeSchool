@@ -16,6 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             AuthorizeRequest::class,
         ]);
+        $middleware->redirectGuestsTo(function (Request $request) {
+            return $request->is('pengaduan*')
+                ? route('user.login')
+                : route('login');
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
