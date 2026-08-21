@@ -53,7 +53,7 @@
         </div>
 
         <div class="d-flex align-items-center justify-content-between mt-4">
-            <a class="text-decoration-none small" href="{{ route('login') }}">
+            <a class="text-decoration-none small" href="{{ route('user.login') }}">
                 {{ __('Already registered?') }}
             </a>
 
