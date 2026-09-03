@@ -15,9 +15,11 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    Route::view('/laporanditerimaLF', 'auth.LaporanTerimaLF')->name('lost-found.report.received');
+    
+  
 
-    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
-    Route::get('/laporan/buat', [LaporanController::class, 'create'])->name('laporan.create');
 });
 
 
