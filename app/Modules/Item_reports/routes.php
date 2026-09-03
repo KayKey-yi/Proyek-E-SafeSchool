@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Modules\Item_reports\Controllers\Item_reportsController;
 
 Route::controller(Item_reportsController::class)->middleware(['web','auth'])->name('item_reports.')->group(function(){
-	Route::get('/lost-and-found', 'userCreate')->name('user.index');
+	Route::get('/lost-and-found', 'userIndex')->name('user.index');
 	Route::get('/lost-and-found/lapor', 'userCreate')->name('user.create');
 	Route::post('/lost-and-found/lapor', 'userStore')->name('user.store');
 	Route::get('/lost-and-found/diterima', 'userSuccess')->name('user.success');

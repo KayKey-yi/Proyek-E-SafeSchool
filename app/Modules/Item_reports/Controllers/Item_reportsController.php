@@ -41,6 +41,16 @@ class Item_reportsController extends Controller
 		return view('user.lost_and_found.create');
 	}
 
+	public function userIndex()
+	{
+		$reports = Item_reports::query()
+			->with(['status', 'user'])
+			->latest('created_at')
+			->paginate(10);
+
+		return view('user.lost_and_found.index', compact('reports'));
+	}
+
 	public function userStore(Request $request)
 	{
 		$data = $request->validate([

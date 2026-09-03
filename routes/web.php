@@ -15,15 +15,8 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-<<<<<<< HEAD
-    
+
     Route::view('/laporanditerimaLF', 'auth.LaporanTerimaLF')->name('lost-found.report.received');
-    
-  
-
-=======
->>>>>>> 5a0efc38113a7512ca47bc119ad637a54701f378
 });
-
 
 require __DIR__.'/auth.php';
