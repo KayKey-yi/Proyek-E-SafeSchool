@@ -309,8 +309,7 @@
         </a>
         <nav class="main-nav">
             <a href="{{ url('/') }}">Beranda</a>
-            <a href="{{ route('item_reports.user.index') }}">Riwayat Lost & Found</a>
-            <a href="{{ route('item_reports.user.create') }}" class="active">Buat Laporan</a>
+            <a href="{{ route('item_reports.user.create') }}" class="active">Lost & Found</a>
             <a href="{{ route('complaints.user.index') }}">Pengaduan</a>
         </nav>
     </header>

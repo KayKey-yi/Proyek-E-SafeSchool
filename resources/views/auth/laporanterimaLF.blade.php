@@ -226,7 +226,7 @@
 
 			<div class="actions">
 
-				<a href="#" class="btn btn-primary">
+				<a href="{{ route('item_reports.user.index') }}" class="btn btn-primary">
 					Pantau Status Laporan
 				</a>
 

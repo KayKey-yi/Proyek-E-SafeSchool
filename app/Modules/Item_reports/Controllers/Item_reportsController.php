@@ -66,7 +66,7 @@ class Item_reportsController extends Controller
 			'is_anonymous' => ['nullable', 'boolean'],
 		]);
 
-		$status = ReportStatuses::query()->first();
+		$status = ReportStatuses::query()->where('status_name', 'Diproses')->first();
 		if (! $status) {
 			return back()->withInput()->withErrors(['jenis_laporan' => 'Status laporan belum tersedia.']);
 		}
@@ -92,7 +92,7 @@ class Item_reportsController extends Controller
 
 	public function userSuccess()
 	{
-		return view('user.lost_and_found.success');
+		return view('auth.laporanterimaLF');
 	}
 
 	public function create(Request $request)
