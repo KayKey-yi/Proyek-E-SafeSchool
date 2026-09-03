@@ -278,6 +278,28 @@
             cursor: not-allowed;
         }
 
+        select.select-placeholder { color: var(--text-muted); }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: var(--text-dark);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .2s ease, transform .2s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
         @media (max-width: 640px) {
             nav.main-nav { display: none; }
             main { padding: 0 16px; }
@@ -312,7 +334,7 @@
         <form class="card" id="pengaduanForm" method="POST" action="{{ route('complaints.user.store') }}" enctype="multipart/form-data">
             @csrf
 
-            @if ($errors->any())
+            @if (isset($errors) && $errors->any())
                 <div class="alert-banner alert-error">
                     <strong>Validasi Gagal:</strong> {{ $errors->first() }}
                 </div>
@@ -335,7 +357,12 @@
 
             <div class="field">
                 <label for="lokasi">Lokasi Kejadian <span style="color: var(--danger);">*</span></label>
-                <input type="text" id="lokasi" name="lokasi" value="{{ old('lokasi') }}" placeholder="Contoh: Ruang Kelas 10-A, Kantin, Lapangan" required>
+                <select id="lokasi" name="lokasi" class="select-placeholder" required>
+                    <option value="" disabled {{ old('lokasi') ? '' : 'selected' }}>Pilih Lokasi Kejadian</option>
+                    @foreach (['Ruang Kelas', 'Kantin', 'Perpustakaan', 'Lapangan Olahraga', 'Area Parkir', 'Toilet', 'Lainnya'] as $location)
+                        <option value="{{ $location }}" {{ old('lokasi') === $location ? 'selected' : '' }}>{{ $location }}</option>
+                    @endforeach
+                </select>
                 @error('lokasi')
                     <div class="field-error">{{ $message }}</div>
                 @enderror
@@ -386,6 +413,8 @@
         </form>
     </main>
 
+    <div class="toast" id="toast">Pengaduan berhasil dikirim.</div>
+
     <script>
         const deskripsi = document.getElementById('deskripsi');
         const charCount = document.getElementById('charCount');
@@ -401,6 +430,11 @@
         // Character counter
         deskripsi.addEventListener('input', () => {
             charCount.textContent = deskripsi.value.length;
+        });
+
+        const lokasi = document.getElementById('lokasi');
+        lokasi.addEventListener('change', () => {
+            lokasi.classList.toggle('select-placeholder', lokasi.value === '');
         });
 
         // Upload box handlers
