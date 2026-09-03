@@ -36,6 +36,55 @@ class Item_reportsController extends Controller
 		return view('Item_reports::item_reports', array_merge($data, ['title' => $this->title]));
 	}
 
+	public function userCreate()
+	{
+		return view('user.lost_and_found.create');
+	}
+
+	public function userStore(Request $request)
+	{
+		$data = $request->validate([
+			'jenis_laporan' => ['required', 'string', 'max:50'],
+			'nama_barang' => ['required', 'string', 'max:150'],
+			'kategori_barang' => ['nullable', 'string', 'max:100'],
+			'merek' => ['nullable', 'string', 'max:100'],
+			'warna' => ['nullable', 'string', 'max:50'],
+			'ciri_ciri' => ['required', 'string', 'max:500'],
+			'lokasi' => ['required', 'string', 'max:100'],
+			'tanggal' => ['required', 'date'],
+			'foto' => ['nullable', 'file', 'mimes:png,jpg,jpeg', 'max:5120'],
+			'is_anonymous' => ['nullable', 'boolean'],
+		]);
+
+		$status = ReportStatuses::query()->first();
+		if (! $status) {
+			return back()->withInput()->withErrors(['jenis_laporan' => 'Status laporan belum tersedia.']);
+		}
+
+		$item_reports = new Item_reports();
+		$item_reports->user_id = Auth::id();
+		$item_reports->status_id = $status->id;
+		$item_reports->jenis_laporan = $data['jenis_laporan'];
+		$item_reports->nama_barang = $data['nama_barang'];
+		$item_reports->kategori_barang = $data['kategori_barang'];
+		$item_reports->merek = $data['merek'];
+		$item_reports->warna = $data['warna'];
+		$item_reports->ciri_ciri = $data['ciri_ciri'];
+		$item_reports->lokasi = $data['lokasi'];
+		$item_reports->tanggal = $data['tanggal'];
+		$item_reports->foto = $request->hasFile('foto') ? $request->file('foto')->store('lost_and_found', 'public') : null;
+		$item_reports->is_anonymous = $request->boolean('is_anonymous');
+		$item_reports->created_by = Auth::id();
+		$item_reports->save();
+
+		return redirect()->route('item_reports.user.success');
+	}
+
+	public function userSuccess()
+	{
+		return view('user.lost_and_found.success');
+	}
+
 	public function create(Request $request)
 	{
 		$ref_users = Users::all()->pluck('name','id');

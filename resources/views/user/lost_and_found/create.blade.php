@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Buat Pengaduan Baru - E-Safe School</title>
+    <title>Lapor Lost & Found - E-Safe School</title>
     <style>
         :root {
             --primary: #2b2fa3;
@@ -278,6 +278,16 @@
             cursor: not-allowed;
         }
 
+        .info-text {
+            background: rgba(43,47,163,0.08);
+            border-left: 4px solid var(--primary);
+            padding: 12px 14px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
         @media (max-width: 640px) {
             nav.main-nav { display: none; }
             main { padding: 0 16px; }
@@ -299,69 +309,96 @@
         </a>
         <nav class="main-nav">
             <a href="{{ url('/') }}">Beranda</a>
-            <a href="#">Lost &amp; Found</a>
-            <a href="{{ route('complaints.user.index') }}" class="active">Pengaduan</a>
+            <a href="{{ route('item_reports.user.create') }}" class="active">Lost & Found</a>
+            <a href="{{ route('complaints.user.index') }}">Pengaduan</a>
         </nav>
     </header>
 
     <div class="page-title-bar">
-        <h1>Buat Pengaduan Baru</h1>
+        <h1>Lapor Lost & Found</h1>
     </div>
 
     <main>
-        <form class="card" id="pengaduanForm" method="POST" action="{{ route('complaints.user.store') }}" enctype="multipart/form-data">
+        <form class="card" id="lostFoundForm" method="POST" action="{{ route('item_reports.user.store') }}" enctype="multipart/form-data">
             @csrf
 
-            @if ($errors->any())
-                <div class="alert-banner alert-error">
-                    <strong>Validasi Gagal:</strong> {{ $errors->first() }}
-                </div>
-            @endif
+            <div class="info-text">
+                💡 Gunakan form ini untuk melaporkan barang yang hilang atau barang yang Anda temukan di sekolah.
+            </div>
 
             <div class="field">
-                <label for="kategori">Kategori Pengaduan <span style="color: var(--danger);">*</span></label>
-                <select id="kategori" name="kategori" required>
-                    <option value="">-- Pilih Kategori --</option>
-                    <option value="Bullying" {{ old('kategori') === 'Bullying' ? 'selected' : '' }}>Bullying</option>
-                    <option value="Kekerasan" {{ old('kategori') === 'Kekerasan' ? 'selected' : '' }}>Kekerasan</option>
-                    <option value="Kehilangan Barang" {{ old('kategori') === 'Kehilangan Barang' ? 'selected' : '' }}>Kehilangan Barang</option>
-                    <option value="Kerusakan Fasilitas" {{ old('kategori') === 'Kerusakan Fasilitas' ? 'selected' : '' }}>Kerusakan Fasilitas</option>
-                    <option value="Lainnya" {{ old('kategori') === 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                <label for="jenis_laporan">Jenis Laporan <span style="color: var(--danger);">*</span></label>
+                <select id="jenis_laporan" name="jenis_laporan" required>
+                    <option value="">-- Pilih Jenis --</option>
+                    <option value="Kehilangan" {{ old('jenis_laporan') === 'Kehilangan' ? 'selected' : '' }}>Kehilangan</option>
+                    <option value="Temuan" {{ old('jenis_laporan') === 'Temuan' ? 'selected' : '' }}>Temuan</option>
                 </select>
-                @error('kategori')
+                @error('jenis_laporan')
                     <div class="field-error">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="field">
-                <label for="lokasi">Lokasi Kejadian <span style="color: var(--danger);">*</span></label>
-                <input type="text" id="lokasi" name="lokasi" value="{{ old('lokasi') }}" placeholder="Contoh: Ruang Kelas 10-A, Kantin, Lapangan" required>
+                <label for="nama_barang">Nama Barang <span style="color: var(--danger);">*</span></label>
+                <input type="text" id="nama_barang" name="nama_barang" value="{{ old('nama_barang') }}" placeholder="Contoh: Dompet, Hp, Kacamata" required>
+                @error('nama_barang')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="field">
+                <label for="kategori_barang">Kategori Barang</label>
+                <input type="text" id="kategori_barang" name="kategori_barang" value="{{ old('kategori_barang') }}" placeholder="Contoh: Elektronik, Aksesori, Pakaian">
+                @error('kategori_barang')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="field">
+                <label for="merek">Merek</label>
+                <input type="text" id="merek" name="merek" value="{{ old('merek') }}" placeholder="Contoh: Apple, Samsung, Tidak Ada">
+                @error('merek')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="field">
+                <label for="warna">Warna</label>
+                <input type="text" id="warna" name="warna" value="{{ old('warna') }}" placeholder="Contoh: Hitam, Biru, Merah">
+                @error('warna')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="field">
+                <label for="ciri_ciri">Ciri-ciri / Deskripsi Barang <span style="color: var(--danger);">*</span></label>
+                <textarea id="ciri_ciri" name="ciri_ciri" maxlength="500" placeholder="Jelaskan ciri-ciri khusus barang (maksimal 500 karakter)" required>{{ old('ciri_ciri') }}</textarea>
+                <div class="char-count"><span id="charCount">{{ strlen(old('ciri_ciri') ?? '') }}</span>/500</div>
+                @error('ciri_ciri')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="field">
+                <label for="lokasi">Lokasi <span style="color: var(--danger);">*</span></label>
+                <input type="text" id="lokasi" name="lokasi" value="{{ old('lokasi') }}" placeholder="Tempat barang hilang/ditemukan" required>
                 @error('lokasi')
                     <div class="field-error">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="field">
-                <label for="waktu">Waktu Kejadian <span style="color: var(--danger);">*</span></label>
-                <input type="datetime-local" id="waktu" name="waktu" value="{{ old('waktu') }}" required>
-                @error('waktu')
+                <label for="tanggal">Tanggal Hilang/Ditemukan <span style="color: var(--danger);">*</span></label>
+                <input type="date" id="tanggal" name="tanggal" value="{{ old('tanggal') }}" required>
+                @error('tanggal')
                     <div class="field-error">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="field">
-                <label for="deskripsi">Deskripsi Kejadian <span style="color: var(--danger);">*</span></label>
-                <textarea id="deskripsi" name="deskripsi" maxlength="500" placeholder="Jelaskan kejadian secara detail (maksimal 500 karakter)" required>{{ old('deskripsi') }}</textarea>
-                <div class="char-count"><span id="charCount">{{ strlen(old('deskripsi') ?? '') }}</span>/500</div>
-                @error('deskripsi')
-                    <div class="field-error">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="field">
-                <label for="bukti">Upload Bukti (Opsional)</label>
+                <label for="foto">Foto Barang (Opsional)</label>
                 <div class="upload-box" id="uploadBox">
-                    <input type="file" id="bukti" name="bukti" accept=".png,.jpg,.jpeg">
+                    <input type="file" id="foto" name="foto" accept=".png,.jpg,.jpeg">
                     <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -371,26 +408,26 @@
                 </div>
                 <div class="error-text" id="fileError">Ukuran file melebihi 5MB atau format tidak didukung.</div>
                 <div class="file-preview-list" id="filePreviewList"></div>
-                @error('bukti')
+                @error('foto')
                     <div class="field-error">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="form-footer">
                 <label class="anon-check">
-                    <input type="checkbox" id="anonim" name="anonim" value="1" {{ old('anonim', '1') ? 'checked' : '' }}>
-                    Kirim secara anonim
+                    <input type="checkbox" id="is_anonymous" name="is_anonymous" value="1" {{ old('is_anonymous', '1') ? 'checked' : '' }}>
+                    Laporkan secara anonim
                 </label>
-                <button type="submit" class="submit-btn">Kirim Pengaduan</button>
+                <button type="submit" class="submit-btn">Kirim Laporan</button>
             </div>
         </form>
     </main>
 
     <script>
-        const deskripsi = document.getElementById('deskripsi');
+        const ciriCiri = document.getElementById('ciri_ciri');
         const charCount = document.getElementById('charCount');
         const uploadBox = document.getElementById('uploadBox');
-        const fileInput = document.getElementById('bukti');
+        const fileInput = document.getElementById('foto');
         const filePreviewList = document.getElementById('filePreviewList');
         const fileError = document.getElementById('fileError');
 
@@ -399,11 +436,11 @@
         let selectedFile = null;
 
         // Character counter
-        deskripsi.addEventListener('input', () => {
-            charCount.textContent = deskripsi.value.length;
+        ciriCiri.addEventListener('input', () => {
+            charCount.textContent = ciriCiri.value.length;
         });
 
-        // Upload box handlers
+        // Upload handlers
         uploadBox.addEventListener('click', () => fileInput.click());
 
         uploadBox.addEventListener('dragover', (e) => {
