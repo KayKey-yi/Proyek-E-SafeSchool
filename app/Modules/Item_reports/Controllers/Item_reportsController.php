@@ -92,7 +92,7 @@ class Item_reportsController extends Controller
 
 	public function userSuccess()
 	{
-		return view('auth.laporanterimaLF');
+		return view('user.lost_and_found.laporanterimaLF');
 	}
 
 	public function create(Request $request)
