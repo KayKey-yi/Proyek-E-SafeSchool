@@ -5,6 +5,8 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>E-Safe School - Beranda</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="{{ asset('assets/css/shared/app-user.css') }}">
 <style>
 :root{--blue-900:#1e3a8a;--blue-800:#1e40af;--blue-700:#1d4ed8;--blue-100:#dbeafe;--slate-50:#f8fafc;--gray-100:#f3f4f6;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-500:#6b7280;--gray-600:#4b5563;--gray-800:#1f2937;--gray-900:#111827}
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--gray-900);background:#fff}a{text-decoration:none;color:inherit}.container{max-width:1200px;margin:0 auto;padding:0 24px}
@@ -15,9 +17,32 @@
 </style>
 </head>
 <body>
+
+
+@include('layouts.sidebar-user')
+
 <nav class="navbar"><div class="container"><div class="nav-left"><button class="menu-btn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a href="{{ url('/') }}" class="brand"><span class="brand-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span><span class="brand-name">E-Safe School</span></a></div><div class="nav-links"><a href="{{ url('/') }}" class="active">Beranda</a><a href="{{ route('item_reports.user.index') }}">Lost &amp; Found</a><a href="{{ url('/pengaduan') }}">Pengaduan</a></div></div></nav>
 <section class="hero"><div class="container"><div class="hero-text"><span class="badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>E-Safe School</span><h1>Sekolah Aman, Nyaman,<br>dan Peduli</h1><p>Platform pengaduan dan lost &amp; found untuk mewujudkan lingkungan sekolah yang aman, nyaman, dan saling peduli</p><div class="btn-group"><a href="{{ url('/pengaduan/lapor') }}" class="btn btn-primary">Laporkan Pengaduan</a><a href="{{ route('item_reports.user.create') }}" class="btn btn-outline">Laporkan Lost &amp; Found</a></div></div><div class="hero-illustration"><img src="{{ asset('assets/Foto Anak Sekolah.png') }}" alt="Ilustrasi siswa E-Safe School"></div></div></section>
 <section class="stats"><div class="container"><div class="stat-item"><div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8-1.06 0-2.077-.163-3.02-.463L3 21l1.5-4.5C3.55 15.163 3 13.62 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div><div><p class="stat-number">{{ $totalPengaduan ?? 120 }}</p><p class="stat-label">Pengaduan</p><p class="stat-desc">Total Laporan Masuk</p></div></div><div class="stat-item"><div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></div><div><p class="stat-number">{{ $totalBarang ?? 85 }}</p><p class="stat-label">Barang Ditemukan</p><p class="stat-desc">Barang yang Berhasil Ditemukan</p></div></div><div class="stat-item"><div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div><p class="stat-number">{{ $totalSelesai ?? 95 }}</p><p class="stat-label">Kasus Selesai</p><p class="stat-desc">Laporan yang Telah Diselesaikan</p></div></div></div></section>
-<script>document.getElementById('menuBtn').addEventListener('click',function(){const links=document.querySelector('.nav-links');const open=links.classList.toggle('is-open');this.setAttribute('aria-expanded',open)});</script>
+
+
+<script>
+document.getElementById('menuBtn').addEventListener('click', function () {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const isOpen = sidebar.classList.contains('open');
+    if (isOpen) {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+    } else {
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+    }
+});
+document.getElementById('sidebarOverlay').addEventListener('click', function () {
+    document.getElementById('sidebar').classList.remove('open');
+    this.classList.remove('show');
+});
+</script>
 </body>
 </html>

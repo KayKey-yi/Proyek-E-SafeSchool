@@ -311,7 +311,6 @@
 </head>
 <body>
     <header class="topbar">
-        <span class="menu-icon">&#9776;</span>
         <a href="{{ url('/') }}" class="brand">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 2L4 5v6c0 5.5 3.4 9.7 8 11 4.6-1.3 8-5.5 8-11V5l-8-3z" stroke="#2b2fa3" stroke-width="1.8" fill="none"/>

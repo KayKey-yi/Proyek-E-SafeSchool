@@ -193,8 +193,7 @@
 <body>
 
 	<nav class="navbar">
-		<span class="hamburger">&#9776;</span>
-
+		
 		<span class="brand">
 			<img
 				src="{{ asset('images/Safe.png') }}"
