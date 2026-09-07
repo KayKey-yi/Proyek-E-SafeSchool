@@ -43,6 +43,10 @@ document.getElementById('sidebarOverlay').addEventListener('click', function () 
     document.getElementById('sidebar').classList.remove('open');
     this.classList.remove('show');
 });
+document.getElementById('sidebarClose').addEventListener('click', function () {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+});
 </script>
 </body>
 </html>

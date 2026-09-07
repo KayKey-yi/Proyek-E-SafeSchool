@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Permission;
+use App\Modules\Complaints\Models\Complaints;
+use App\Modules\Item_reports\Models\Item_reports;
+use App\Modules\report_statuses\Models\report_statuses as ReportStatuses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,6 +14,42 @@ class DashboardController extends Controller
     public function index()
     {
         return view('dashboard');
+    }
+
+    public function userDashboard()
+    {
+        $userId = Auth::id();
+        $statuses = ReportStatuses::query()->pluck('status_name', 'id');
+        $complaints = Complaints::query()->where('user_id', $userId)->latest('created_at')->get();
+        $itemReports = Item_reports::query()->where('user_id', $userId)->latest('created_at')->get();
+        $finishedStatuses = ['selesai', 'dikembalikan', 'ditemukan'];
+
+        $activities = collect($complaints->map(function ($report) use ($statuses) {
+            return [
+                'type' => 'Pengaduan',
+                'title' => $report->judul,
+                'status' => $statuses[$report->status_id] ?? 'Diproses',
+                'created_at' => $report->created_at,
+            ];
+        })->all())->concat($itemReports->map(function ($report) use ($statuses) {
+            return [
+                'type' => 'Lost & Found',
+                'title' => $report->nama_barang,
+                'status' => $statuses[$report->status_id] ?? 'Diproses',
+                'created_at' => $report->created_at,
+            ];
+        })->all())->sortByDesc('created_at')->values();
+
+        $isFinished = function ($report) use ($statuses, $finishedStatuses) {
+            return in_array(strtolower($statuses[$report->status_id] ?? ''), $finishedStatuses, true);
+        };
+
+        return view('user.dashboard', [
+            'complaintsCount' => $complaints->count(),
+            'itemsCount' => $itemReports->count(),
+            'finishedCount' => $complaints->filter($isFinished)->count() + $itemReports->filter($isFinished)->count(),
+            'activities' => $activities,
+        ]);
     }
 
     public function changeRole($id_role)
