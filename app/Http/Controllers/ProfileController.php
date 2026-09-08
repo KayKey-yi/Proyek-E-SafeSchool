@@ -63,7 +63,7 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-        $user->fill($request->safe()->except('profile_photo')->toArray());
+        $user->fill($request->safe()->except('profile_photo'));
 
         if ($request->hasFile('profile_photo')) {
             if ($user->profile_photo) {
