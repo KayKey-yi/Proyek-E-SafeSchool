@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Modules\Complaints\Models\Complaints;
+use App\Modules\Item_reports\Models\Item_reports;
+use App\Modules\report_statuses\Models\report_statuses as ReportStatuses;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -16,8 +20,40 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $user = $request->user();
+        $statuses = ReportStatuses::query()->pluck('status_name', 'id');
+        $reports = collect(Complaints::query()
+            ->where('user_id', $user->id)
+            ->latest('created_at')
+            ->get()
+            ->map(function ($report) use ($statuses) {
+                return [
+                    'type' => 'Pengaduan',
+                    'title' => $report->judul,
+                    'id' => $report->id,
+                    'status' => $statuses[$report->status_id] ?? 'Sedang Diproses',
+                    'created_at' => $report->created_at,
+                ];
+            }))
+            ->concat(Item_reports::query()
+                ->where('user_id', $user->id)
+                ->latest('created_at')
+                ->get()
+                ->map(function ($report) use ($statuses) {
+                    return [
+                        'type' => 'Lost & Found',
+                        'title' => $report->nama_barang,
+                        'id' => $report->id,
+                        'status' => $statuses[$report->status_id] ?? 'Sedang Diproses',
+                        'created_at' => $report->created_at,
+                    ];
+                }))
+            ->sortByDesc('created_at')
+            ->values();
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'reports' => $reports,
         ]);
     }
 
@@ -26,13 +62,22 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->fill($request->safe()->except('profile_photo')->toArray());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($request->hasFile('profile_photo')) {
+            if ($user->profile_photo) {
+                Storage::disk('public')->delete($user->profile_photo);
+            }
+
+            $user->profile_photo = $request->file('profile_photo')->store('profile-photos', 'public');
         }
 
-        $request->user()->save();
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
