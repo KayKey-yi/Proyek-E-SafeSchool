@@ -22,7 +22,7 @@
         <a href="{{ route('user.notifications') }}" class="sidebar-link {{ request()->routeIs('user.notifications') ? 'active' : '' }}">
             <i class="fa-solid fa-bell"></i> Notifikasi
         </a>
-        <a href="{{ route('profile.edit') }}" class="sidebar-link">
+        <a href="{{ route('profile.edit') }}" class="sidebar-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
             <i class="fa-solid fa-user"></i> Profil
         </a>
         <a href="{{ route('user.settings') }}" class="sidebar-link {{ request()->routeIs('user.settings') ? 'active' : '' }}">
