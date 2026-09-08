@@ -3,88 +3,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lost &amp; Found - E-Safe School</title>
+<title>E-Safe School - Lost &amp; Found</title>
 <style>
-  :root { --primary:#2b2fa3; --primary-dark:#23277f; --bg-page:#eef6f4; --bg-white:#fff; --border:#e1e4ea; --text-dark:#1a1a2e; --text-muted:#8a8f98; }
-  * { box-sizing:border-box; }
-  body { margin:0; min-height:100vh; background:var(--bg-page); color:var(--text-dark); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
-  a { color:inherit; }
-  header.topbar { display:flex; align-items:center; gap:20px; padding:14px 24px; background:#fff; border-bottom:3px solid var(--primary); }
-  .menu-icon { color:#333; font-size:20px; line-height:0; }
-  .brand { display:flex; align-items:center; gap:8px; color:var(--primary); font-size:18px; font-weight:700; text-decoration:none; }
-  .brand svg { flex-shrink:0; }
-  nav.main-nav { display:flex; gap:28px; margin-left:24px; font-size:14px; }
-  nav.main-nav a { padding:4px 0; color:#444; text-decoration:none; }
-  nav.main-nav a.active { border-bottom:2px solid var(--primary); color:var(--primary); font-weight:600; }
-  .page-title-bar { padding:20px 32px 16px; }
-  .page-title-bar h1 { margin:0; color:var(--primary); font-size:22px; }
-  main { max-width:900px; margin:0 auto 40px; padding:0 32px; }
-  .report-list { display:flex; flex-direction:column; gap:14px; }
-  .report-card { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 22px; background:var(--bg-white); border:1px solid var(--border); border-radius:10px; }
-  .report-id { margin-bottom:6px; color:var(--text-muted); font-size:12px; }
-  .report-name { margin-bottom:8px; color:var(--text-dark); font-size:15px; font-weight:700; }
-  .report-date { color:var(--text-muted); font-size:12px; font-weight:600; }
-  .status-badge { flex-shrink:0; padding:9px 18px; border-radius:20px; font-size:13px; font-weight:700; white-space:nowrap; }
-  .status-diproses { background:#dbe6fb; color:#2c5cc5; }
-  .status-ditemukan { background:#d7f3e0; color:#1e8a4c; }
-  .status-dikembalikan { background:#fbe6bd; color:#b8791a; }
-  .end-of-list { padding:30px 0 10px; color:var(--text-muted); font-size:13px; font-weight:600; text-align:center; }
-  .end-of-list svg { display:block; margin:0 auto 8px; color:#b7bcc6; }
-  .empty-state { padding:70px 24px; background:var(--bg-white); border:1px solid var(--border); border-radius:10px; color:var(--text-muted); text-align:center; }
-  .empty-state svg { margin-bottom:14px; color:#c3c8d1; }
-  .empty-title { margin-bottom:6px; color:var(--text-dark); font-size:15px; font-weight:600; }
-  .empty-sub { margin-bottom:20px; color:var(--text-muted); font-size:13px; }
-  .cta-btn { display:inline-block; padding:10px 22px; border:0; border-radius:8px; background:var(--primary); color:#fff; font-size:14px; font-weight:600; text-decoration:none; }
-  .cta-btn:hover { background:var(--primary-dark); }
-  .pagination { display:flex; justify-content:center; margin-top:20px; }
-  @media (max-width:640px) { nav.main-nav { display:none; } main { padding:0 16px; } .page-title-bar { padding-right:16px; padding-left:16px; } .report-card { align-items:flex-start; flex-direction:column; } .status-badge { align-self:flex-start; } }
+  :root{--navy:#16233F;--navy-light:#1F3157;--navy-active:#2A4270;--bg:#F4F6FB;--card:#FFFFFF;--text-dark:#1A1F2B;--text-muted:#8A93A6;--blue:#2F5CFA;--orange-bg:#FDF0DE;--orange-text:#C8791A;--orange-dot:#E8A23D;--green-bg:#E4F6EA;--green-text:#1E8E4F;--green-dot:#33B36B;--border:#EDEFF4}
+  *{box-sizing:border-box}body{margin:0;color:var(--text-dark);background:#DDE2EC;display:flex;justify-content:center;padding:28px 12px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}.app{width:100%;max-width:1180px;height:720px;background:var(--card);border-radius:22px;overflow:hidden;display:flex;box-shadow:0 30px 60px rgba(20,30,60,.18)}
+  .sidebar{width:240px;flex-shrink:0;background:var(--navy);color:#C9D2E8;display:flex;flex-direction:column;padding:22px 16px}.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:600;font-size:15px;padding:6px 8px 28px;text-decoration:none}.brand svg{flex-shrink:0}.nav{display:flex;flex-direction:column;gap:4px}.nav-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:13.5px;text-decoration:none;color:#AEB8D1;cursor:pointer}.nav-item svg{opacity:.85;flex-shrink:0}.nav-item:hover{background:var(--navy-light);color:#fff}.nav-item.active{background:var(--navy-active);color:#fff;font-weight:600}.nav-item.active svg{opacity:1}.sidebar-bottom{margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)}
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}.topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;border-bottom:1px solid var(--border)}.topbar h1{margin:0;font-size:19px;font-weight:700}.breadcrumb{margin:4px 0 0;font-size:12.5px;color:var(--text-muted)}.top-actions{display:flex;align-items:center;gap:18px}.icon-btn{width:34px;height:34px;border-radius:50%;background:#F1F3F9;display:flex;align-items:center;justify-content:center;color:#4C5670;flex-shrink:0}.user-chip{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text-dark)}.avatar{width:30px;height:30px;border-radius:50%;background:#E3E7F1;display:flex;align-items:center;justify-content:center;color:#6A7290}
+  .content{flex:1;overflow-y:auto;padding:22px 28px 28px}.toolbar{display:flex;align-items:center;gap:16px;margin-bottom:22px}.search{flex:1;display:flex;align-items:center;gap:10px;background:#F4F6FB;border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text-muted);font-size:13.5px}.search svg{flex-shrink:0}.search input{border:0;background:transparent;outline:0;font-size:13.5px;width:100%;color:var(--text-dark);font-family:inherit}.btn-primary{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:12px 20px;font-size:13.5px;font-weight:600;white-space:nowrap;cursor:pointer;box-shadow:0 8px 18px rgba(47,92,250,.28);text-decoration:none}.btn-primary:hover{background:#2A4FE0}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.card{border:1px solid var(--border);border-radius:14px;padding:14px;background:#fff;transition:box-shadow .15s ease,transform .15s ease}.card:hover{box-shadow:0 10px 24px rgba(20,30,60,.08);transform:translateY(-2px)}.card[hidden]{display:none}.card-image{height:128px;border-radius:10px;background:#F4F6FB;display:flex;align-items:center;justify-content:center;margin-bottom:14px;overflow:hidden;color:#B7BFD4}.card-image img{width:100%;height:100%;object-fit:cover}.card h3{margin:0 0 6px;font-size:14.5px;font-weight:700}.card p{margin:0;font-size:12.5px;color:var(--text-muted)}.card .date{margin:2px 0 10px}.badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:20px}.badge .dot{width:6px;height:6px;border-radius:50%}.badge.pending{background:var(--orange-bg);color:var(--orange-text)}.badge.pending .dot{background:var(--orange-dot)}.badge.done{background:var(--green-bg);color:var(--green-text)}.badge.done .dot{background:var(--green-dot)}.empty-state{grid-column:1/-1;padding:70px 24px;border:1px dashed var(--border);border-radius:14px;color:var(--text-muted);text-align:center}.empty-state strong{display:block;margin:12px 0 6px;color:var(--text-dark)}.pager{display:flex;justify-content:flex-end;margin-top:18px}.pager a{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--text-dark);cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none}.pager a.disabled{pointer-events:none;opacity:.4}
+  @media(max-width:760px){body{padding:0}.app{min-height:100vh;height:auto;border-radius:0}.sidebar{width:72px;padding:22px 10px}.brand{justify-content:center;padding-left:0;padding-right:0}.brand span,.nav-item span{display:none}.nav-item{justify-content:center;padding:12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.topbar{padding:18px 16px}.content{padding:18px 16px 24px}.toolbar{align-items:stretch;flex-direction:column}.grid{grid-template-columns:1fr}.top-actions .icon-btn{display:none}}
 </style>
 </head>
 <body>
-<header class="topbar">
-  <a href="{{ route('frontend.index') }}" class="brand">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5.5 3.4 9.7 8 11 4.6-1.3 8-5.5 8-11V5l-8-3z" stroke="currentColor" stroke-width="1.8"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    E-Safe School
-  </a>
-  <nav class="main-nav">
-    <a href="{{ route('frontend.index') }}">Beranda</a>
-    <a href="{{ route('item_reports.user.index') }}" class="active">Lost &amp; Found</a>
-    <a href="{{ route('complaints.user.index') }}">Pengaduan</a>
-  </nav>
-</header>
-<div class="page-title-bar"><h1>Lost &amp; Found</h1></div>
-<main>
-  @if ($reports->count())
-    <div class="report-list">
-      @foreach ($reports as $report)
-        @php
-          $statusName = strtolower($report->status?->status_name ?? 'diproses');
-          $statusClass = str_contains($statusName, 'kembali') ? 'status-dikembalikan' : (str_contains($statusName, 'selesai') || str_contains($statusName, 'temu') ? 'status-ditemukan' : 'status-diproses');
-          $statusLabel = str_contains($statusName, 'kembali') ? 'Dikembalikan' : (str_contains($statusName, 'selesai') || str_contains($statusName, 'temu') ? 'Ditemukan' : 'Sedang Diproses');
-        @endphp
-        <article class="report-card">
-          <div>
-            <div class="report-id">#{{ $report->id }}</div>
-            <div class="report-name">{{ $report->nama_barang }}</div>
-            <div class="report-date">{{ optional($report->created_at)->locale('id')->translatedFormat('j F Y, H.i') }} WIB</div>
-          </div>
-          <span class="status-badge {{ $statusClass }}">{{ $statusLabel }}</span>
-        </article>
-      @endforeach
-    </div>
-    @if ($reports->hasMorePages())
-      <div class="pagination">{{ $reports->links() }}</div>
-    @else
-      <div class="end-of-list"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Tidak ada lagi data</div>
-    @endif
-  @else
-    <div class="empty-state">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <div class="empty-title">Belum ada laporan</div>
-      <div class="empty-sub">Laporan barang hilang atau ditemukan akan muncul di sini.</div>
-      <a class="cta-btn" href="{{ route('item_reports.user.create') }}">Buat Laporan Baru</a>
-    </div>
-  @endif
-</main>
+<div class="app">
+  <aside class="sidebar">
+    <a href="{{ url('/') }}" class="brand"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span>E-Safe School</span></a>
+    <nav class="nav">
+      <a class="nav-item" href="{{ url('/') }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Dashboard</span></a>
+      <a class="nav-item" href="{{ url('/pengaduan') }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg><span>Pengaduan</span></a>
+      <a class="nav-item active" href="{{ route('item_reports.user.index') }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.4 14.5 16 10 4 20V4"/><path d="m17.5 6.5 4 4-4 4"/></svg><span>Lost &amp; Found</span></a>
+      <a class="nav-item" href="#"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span>Notifikasi</span></a>
+      <a class="nav-item" href="#"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Profil</span></a>
+      <a class="nav-item" href="#"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg><span>Pengaturan</span></a>
+    </nav>
+    <div class="sidebar-bottom"><a class="nav-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Keluar</span></a></div>
+  </aside>
+  <main class="main">
+    <div class="topbar"><div><h1>Lost &amp; Found</h1><p class="breadcrumb">Lost &amp; Found &gt; Daftar Barang</p></div><div class="top-actions"><div class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div><div class="user-chip"><div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>{{ auth()->user()->name ?? 'Siswa' }}</div></div></div>
+    <section class="content">
+      <div class="toolbar"><label class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="itemSearch" type="search" placeholder="Cari Barang...." aria-label="Cari barang"></label><a class="btn-primary" href="{{ route('item_reports.user.create') }}">Laporkan Barang</a></div>
+      <div class="grid">
+        @forelse($reports as $report)
+          @php
+            $statusName = strtolower($report->status?->status_name ?? 'diproses');
+            $isDone = str_contains($statusName, 'selesai') || str_contains($statusName, 'temu') || str_contains($statusName, 'kembali');
+            $statusLabel = str_contains($statusName, 'kembali') ? 'Sudah Dikembalikan' : ($isDone ? 'Sudah Ditemukan' : 'Menunggu Pemilik');
+          @endphp
+          <article class="card" data-search="{{ strtolower($report->nama_barang.' '.$report->lokasi.' '.($report->kategori_barang ?? '')) }}"><div class="card-image">@if($report->foto)<img src="{{ asset('storage/'.$report->foto) }}" alt="Foto {{ $report->nama_barang }}" loading="lazy">@else<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="m5 17 4-4 3 3 2-2 5 4"/></svg>@endif</div><h3>{{ $report->nama_barang }}</h3><p>{{ $report->lokasi ?: 'Lokasi belum dicatat' }}</p><p class="date">{{ \Illuminate\Support\Carbon::parse($report->tanggal ?? $report->created_at)->locale('id')->translatedFormat('d F Y') }}</p><span class="badge {{ $isDone ? 'done' : 'pending' }}"><span class="dot"></span>{{ $statusLabel }}</span></article>
+        @empty
+          <div class="empty-state"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 10h8M8 14h5"/></svg><strong>Belum ada laporan</strong><span>Laporan barang hilang atau ditemukan akan muncul di sini.</span></div>
+        @endforelse
+      </div>
+      @if($reports->count())<div class="pager"><a class="{{ $reports->hasMorePages() ? '' : 'disabled' }}" href="{{ $reports->nextPageUrl() ?: '#' }}" aria-label="Berikutnya"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a></div>@endif
+    </section>
+  </main>
+</div>
+<form id="logout-form" action="{{ route('logout') }}" method="POST" hidden>@csrf</form>
+<script>const search=document.getElementById('itemSearch');const cards=[...document.querySelectorAll('.card')];search?.addEventListener('input',event=>{const term=event.target.value.toLowerCase().trim();cards.forEach(card=>{card.hidden=term!==''&&!card.dataset.search.includes(term)})});</script>
 </body>
 </html>
