@@ -19,7 +19,7 @@
         <a href="{{ route('item_reports.user.index') }}" class="sidebar-link">
             <i class="fa-solid fa-box-archive"></i> Lost &amp; Found
         </a>
-        <a href="#" class="sidebar-link">
+        <a href="{{ route('user.notifications') }}" class="sidebar-link {{ request()->routeIs('user.notifications') ? 'active' : '' }}">
             <i class="fa-solid fa-bell"></i> Notifikasi
         </a>
         <a href="{{ route('profile.edit') }}" class="sidebar-link">

@@ -52,6 +52,43 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function userNotifications()
+    {
+        $userId = Auth::id();
+        $statuses = ReportStatuses::query()->pluck('status_name', 'id');
+
+        $notifications = collect(Complaints::query()
+            ->where('user_id', $userId)
+            ->latest('created_at')
+            ->get()
+            ->map(function ($report) use ($statuses) {
+                return [
+                    'category' => 'pengaduan',
+                    'label' => 'PENGADUAN',
+                    'message' => 'Laporan baru: '.$report->judul,
+                    'status' => $statuses[$report->status_id] ?? 'Sedang Diproses',
+                    'created_at' => $report->created_at,
+                ];
+            }))
+            ->concat(Item_reports::query()
+                ->where('user_id', $userId)
+                ->latest('created_at')
+                ->get()
+                ->map(function ($report) use ($statuses) {
+                    return [
+                        'category' => 'lostfound',
+                        'label' => 'LOST & FOUND',
+                        'message' => 'Laporan baru: '.$report->nama_barang,
+                        'status' => $statuses[$report->status_id] ?? 'Sedang Diproses',
+                        'created_at' => $report->created_at,
+                    ];
+                }))
+            ->sortByDesc('created_at')
+            ->values();
+
+        return view('user.notifications', compact('notifications'));
+    }
+
     public function changeRole($id_role)
     {
         $user = Auth::user();
