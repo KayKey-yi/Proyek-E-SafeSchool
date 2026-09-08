@@ -25,7 +25,7 @@
         <a href="{{ route('profile.edit') }}" class="sidebar-link">
             <i class="fa-solid fa-user"></i> Profil
         </a>
-        <a href="{{ route('profile.edit') }}" class="sidebar-link">
+        <a href="{{ route('user.settings') }}" class="sidebar-link {{ request()->routeIs('user.settings') ? 'active' : '' }}">
             <i class="fa-solid fa-gear"></i> Pengaturan
         </a>
     </nav>
