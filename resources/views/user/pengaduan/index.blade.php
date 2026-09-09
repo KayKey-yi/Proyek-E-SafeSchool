@@ -1,13 +1,33 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>E-Safe School - Pengaduan Saya</title>
-<style>
-:root{--blue-900:#1e3a8a;--blue-700:#1d4ed8;--blue-100:#dbeafe;--green-bg:#dcfce7;--green-text:#15803d;--red-bg:#fee2e2;--red-text:#dc2626;--slate-50:#f4f7f8;--gray-100:#f3f4f6;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-500:#6b7280;--gray-600:#4b5563;--gray-800:#1f2937;--gray-900:#111827}
-*{box-sizing:border-box;margin:0;padding:0}body{min-height:100vh;background:var(--slate-50);color:var(--gray-900);font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif}a{text-decoration:none;color:inherit}.navbar{border-bottom:1px solid var(--gray-100);background:#fff}.navbar .inner{max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}.nav-left{display:flex;align-items:center;gap:16px}.menu-btn{display:flex;color:var(--gray-800);background:none;border:0;cursor:pointer}.brand{display:flex;align-items:center;gap:8px}.brand-name{color:var(--blue-700);font-size:15px;font-weight:700}.nav-links{display:flex;align-items:center;gap:32px;font-size:14px;font-weight:500}.nav-links a{color:var(--gray-600)}.nav-links a.active,.nav-links a:hover{color:var(--blue-700)}.nav-links a.active{font-weight:700}.page-header,.list-wrapper{max-width:900px;margin:0 auto;padding-right:24px;padding-left:24px}.page-header{padding-top:24px;padding-bottom:16px}.page-header h1{color:var(--blue-700);font-size:20px;font-weight:800}.list-wrapper{padding-bottom:40px}.report-card{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:18px 22px;margin-bottom:16px;border:1px solid var(--gray-300);border-radius:10px;background:#fff}.report-id{margin-bottom:6px;color:var(--gray-500);font-size:12px}.report-title{margin-bottom:6px;color:var(--gray-900);font-size:16px;font-weight:700}.report-date{color:var(--gray-800);font-size:12px;font-weight:700}.report-status{display:flex;flex-direction:column;align-items:flex-end;gap:6px}.badge{display:inline-block;padding:8px 18px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}.badge-proses{background:var(--blue-100);color:var(--blue-700)}.badge-selesai{background:var(--green-bg);color:var(--green-text)}.badge-ditolak{background:var(--red-bg);color:var(--red-text)}.reason-text{max-width:260px;color:var(--gray-400);font-size:12px;text-align:right}.empty-state{padding:32px 0 8px;color:var(--gray-400);text-align:center}.empty-state svg{margin-bottom:10px}.empty-state p{font-size:14px;font-weight:500}.new-report{display:inline-block;padding:10px 18px;margin-top:18px;border-radius:8px;background:var(--blue-900);color:#fff;font-size:13px;font-weight:700}.new-report:hover{background:#16306e}@media(max-width:768px){.nav-links{display:none}.nav-links.is-open{display:flex;position:absolute;top:64px;left:0;right:0;z-index:50;flex-direction:column;align-items:flex-start;gap:16px;padding:16px 24px;border-bottom:1px solid var(--gray-100);background:#fff}.report-status{align-items:flex-start}.reason-text{text-align:left}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaduan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/shared/app-user.css') }}">
+    <style>
+        :root {
+            --page-bg: #efefef;
+            --card-border: #d5d5d5;
+            --text: #202020;
+            --muted: #767676;
+            --blue-bg: #dfeafc;
+            --blue-text: #3c6bcf;
+            --green-bg: #dff5e8;
+            --green-text: #2b875e;
+            --input-bg: #f3f3f3;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--page-bg);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar"><div class="inner"><div class="nav-left"><a href="{{ route('frontend.index') }}" class="brand"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span class="brand-name">E-Safe School</span></a></div><div class="nav-links"><a href="{{ route('frontend.index') }}">Beranda</a><a href="{{ url('/lost-and-found') }}">Lost &amp; Found</a><a href="{{ route('complaints.user.index') }}" class="active">Pengaduan</a></div></div></nav>

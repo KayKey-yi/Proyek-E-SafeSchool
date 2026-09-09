@@ -17,7 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
             AuthorizeRequest::class,
         ]);
         $middleware->redirectGuestsTo(function (Request $request) {
-            return $request->is('pengaduan*')
+            return $request->is('user/dashboard')
+                || $request->is('pengaduan*')
+                || $request->is('lost-and-found*')
                 ? route('user.login')
                 : route('login');
         });

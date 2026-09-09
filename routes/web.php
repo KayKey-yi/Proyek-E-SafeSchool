@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'user.home')->name('frontend.index');
 
 Route::middleware(['auth'])->group(function(){
+    Route::get('/user/dashboard', [DashboardController::class, 'userDashboard'])->name('user.dashboard');
+    Route::get('/user/notifikasi', [DashboardController::class, 'userNotifications'])->name('user.notifications');
+    Route::view('/user/pengaturan', 'user.settings')->name('user.settings');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/role/set/{id_role}', [DashboardController::class,'changeRole'])->name('dashboard.change.role');
