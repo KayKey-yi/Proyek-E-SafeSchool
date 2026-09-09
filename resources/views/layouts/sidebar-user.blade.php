@@ -7,7 +7,7 @@
     </div>
 
     <nav class="sidebar-menu">
-        <a href="#" class="sidebar-link">
+        <a href="{{ Auth::check() ? route('dashboard') : route('login') }}" class="sidebar-link">
             <i class="fa-solid fa-table-columns"></i> Dashboard
         </a>
         <a href="#" class="sidebar-link">

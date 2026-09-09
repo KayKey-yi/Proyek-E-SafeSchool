@@ -9,6 +9,7 @@ Route::controller(ComplaintsController::class)->middleware(['web','auth'])->name
 	Route::get('/pengaduan/diterima', 'userSuccess')->name('user.success');
 	Route::get('/pengaduan-saya', 'userIndex')->name('user.index');
 	Route::get('/pengaduan', 'userIndex')->name('user.index.short');
+	Route::get('/pengaduan/{complaints}', 'userShow')->name('user.show');
 	Route::get('/complaints', 'index')->name('index');
 	Route::get('/complaints/data', 'data')->name('data.index');
 	Route::get('/complaints/create', 'create')->name('create');

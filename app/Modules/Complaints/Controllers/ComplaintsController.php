@@ -75,6 +75,18 @@ class ComplaintsController extends Controller
 		return view('user.pengaduan.index', compact('reports', 'statuses'));
 	}
 
+	public function userShow(string $complaints)
+	{
+		$report = Complaints::query()
+			->where('user_id', Auth::id())
+			->whereKey($complaints)
+			->firstOrFail();
+
+		$status = ReportStatuses::query()->find($report->status_id);
+
+		return view('user.pengaduan.detail', compact('report', 'status'));
+	}
+
 	public function userSuccess()
 	{
 		return view('user.pengaduan.success');
