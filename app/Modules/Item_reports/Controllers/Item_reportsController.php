@@ -90,6 +90,18 @@ class Item_reportsController extends Controller
 		return redirect()->route('item_reports.user.success');
 	}
 
+	public function userShow(string $item_reports)
+	{
+		$report = Item_reports::query()
+			->where('user_id', Auth::id())
+			->whereKey($item_reports)
+			->firstOrFail();
+
+		$status = ReportStatuses::query()->find($report->status_id);
+
+		return view('user.lost_and_found.detail', compact('report', 'status'));
+	}
+
 	public function userSuccess()
 	{
 		return view('user.lost_and_found.laporanterimaLF');
