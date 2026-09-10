@@ -10,17 +10,13 @@
     </div>
 
     <nav class="sidebar-menu">
-<<<<<<< HEAD
-        <a href="{{ Auth::check() ? route('dashboard') : route('login') }}" class="sidebar-link">
-=======
         <a href="{{ route('user.dashboard') }}" class="sidebar-link {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
->>>>>>> 3fa04cd5e224871241048b5ee17e261f5a17f00a
             <i class="fa-solid fa-table-columns"></i> Dashboard
         </a>
-        <a href="{{ route('complaints.user.index.short') }}" class="sidebar-link">
+        <a href="{{ route('complaints.user.index.short') }}" class="sidebar-link {{ request()->routeIs('complaints.user.*') ? 'active' : '' }}">
             <i class="fa-solid fa-file-lines"></i> Pengaduan
         </a>
-        <a href="{{ route('item_reports.user.index') }}" class="sidebar-link">
+        <a href="{{ route('item_reports.user.index') }}" class="sidebar-link {{ request()->routeIs('item_reports.user.*') ? 'active' : '' }}">
             <i class="fa-solid fa-box-archive"></i> Lost &amp; Found
         </a>
         <a href="{{ route('user.notifications') }}" class="sidebar-link {{ request()->routeIs('user.notifications') ? 'active' : '' }}">

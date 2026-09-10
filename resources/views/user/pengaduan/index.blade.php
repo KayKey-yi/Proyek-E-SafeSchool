@@ -27,6 +27,141 @@
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text);
         }
+
+        a { color: inherit; text-decoration: none; }
+
+        .navbar {
+            min-height: 50px;
+            border-bottom: 1px solid #e8e8e8;
+            background: #fff;
+        }
+
+        .navbar .inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: #1d4ed8;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .brand svg { flex: 0 0 auto; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            color: #222;
+            font-size: 13px;
+        }
+
+        .nav-links a { padding: 4px 0; }
+        .nav-links a:hover,
+        .nav-links a.active { color: #1d4ed8; }
+
+        .page-header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 32px 16px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            color: #1742b5;
+            font-size: 22px;
+            line-height: 1.2;
+        }
+
+        .list-wrapper {
+            max-width: 1200px;
+            min-height: 529px;
+            margin: 0 auto 32px;
+            padding: 8px 42px 40px;
+            background: #fff;
+        }
+
+        .report-link { display: block; }
+
+        .report-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            min-height: 118px;
+            margin: 0 0 16px;
+            padding: 18px 18px;
+            border: 1px solid #aaa;
+            border-radius: 15px;
+            background: #fff;
+            transition: border-color .15s ease, box-shadow .15s ease;
+        }
+
+        .report-card:hover {
+            border-color: #6d6d6d;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+        }
+
+        .report-info { min-width: 0; }
+        .report-id { margin-bottom: 16px; color: #666; font-size: 12px; }
+        .report-title { margin-bottom: 18px; font-size: 18px; font-weight: 700; overflow-wrap: anywhere; }
+        .report-date { color: #666; font-size: 12px; font-weight: 600; }
+
+        .report-status {
+            display: flex;
+            flex: 0 0 280px;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .badge {
+            display: inline-flex;
+            min-width: 118px;
+            justify-content: center;
+            padding: 9px 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .badge-proses { background: var(--blue-bg); color: var(--blue-text); }
+        .badge-selesai { background: var(--green-bg); color: var(--green-text); }
+        .badge-ditolak { background: #fde8e8; color: #e33434; }
+        .reason-text { color: #bdbdbd; font-size: 12px; text-align: right; }
+
+        .empty-state {
+            display: flex;
+            min-height: 300px;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #aaa;
+            text-align: center;
+        }
+
+        .empty-state svg { color: #c7c7c7; }
+        .empty-state p { margin: 8px 0 4px; font-size: 17px; }
+        .new-report { color: #1d4ed8; font-size: 14px; }
+
+        @media (max-width: 700px) {
+            .navbar .inner { padding: 12px 16px; }
+            .nav-links { gap: 14px; font-size: 11px; }
+            .page-header { padding: 20px 16px 14px; }
+            .list-wrapper { margin: 0 8px 24px; padding: 8px 14px 28px; }
+            .report-card { align-items: flex-start; flex-direction: column; gap: 16px; }
+            .report-status { flex-basis: auto; width: 100%; align-items: flex-start; }
+            .reason-text { text-align: left; }
+        }
     </style>
 </head>
 <body>
