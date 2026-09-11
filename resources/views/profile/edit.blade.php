@@ -27,8 +27,11 @@
         .photo-form { display:flex; flex-direction:column; align-items:center; gap:7px; }
         .photo-button { padding:6px 11px; border:0; border-radius:7px; background:var(--navy); color:#fff; font-size:11px; font-weight:600; cursor:pointer; }
         .photo-button:hover { background:#25366f; }
+        .photo-button.secondary { background:#eef2f7; color:var(--navy); }
+        .photo-button.secondary:hover { background:#e3e8f3; }
         .photo-help { color:var(--muted); font-size:10px; }
         .photo-error { max-width:180px; color:#c0392b; font-size:11px; line-height:1.4; }
+        .photo-actions { display:flex; flex-wrap:wrap; justify-content:center; gap:6px; }
         .profile-alert { margin-bottom:18px; padding:11px 14px; border-radius:8px; background:var(--green-bg); color:var(--green); font-size:12px; font-weight:600; }
         .identity-name { margin-top:5px; font-size:17px; font-weight:700; }
         .identity-contact { color:var(--blue); font-size:12px; font-weight:600; overflow-wrap:anywhere; }
@@ -89,7 +92,12 @@
                         @unless($user->profile_photo){{ $user->initials() }}@endunless
                     </label>
                     <input id="profile_photo" name="profile_photo" type="file" accept=".jpg,.jpeg,.png,.webp" hidden onchange="this.form.submit()">
-                    <label for="profile_photo" class="photo-button">Ganti foto</label>
+                    <div class="photo-actions">
+                        <label for="profile_photo" class="photo-button">Ganti foto</label>
+                        @if($user->profile_photo)
+                            <button type="submit" name="remove_photo" value="1" class="photo-button secondary">Hapus foto</button>
+                        @endif
+                    </div>
                     @error('profile_photo')<span class="photo-error">{{ $message }}</span>@enderror
                 </form>
                 <div class="identity-name">{{ $user->name }}</div>

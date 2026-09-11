@@ -69,6 +69,39 @@
         .nav-links a:hover,
         .nav-links a.active { color: #1d4ed8; }
 
+        .dashboard-topbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #fff;
+        }
+
+        .dashboard-menu-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border: 0;
+            border-radius: 8px;
+            background: transparent;
+            color: #16215c;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .dashboard-menu-btn:hover {
+            background: #f1f5f9;
+        }
+
+        .dashboard-topbar-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1c1c1c;
+        }
+
         .page-header {
             max-width: 1200px;
             margin: 0 auto;
@@ -165,18 +198,47 @@
     </style>
 </head>
 <body>
-<nav class="navbar"><div class="inner"><div class="nav-left"><a href="{{ route('frontend.index') }}" class="brand"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span class="brand-name">E-Safe School</span></a></div><div class="nav-links"><a href="{{ route('frontend.index') }}">Beranda</a><a href="{{ url('/lost-and-found') }}">Lost &amp; Found</a><a href="{{ route('complaints.user.index') }}" class="active">Pengaduan</a></div></div></nav>
-<div class="page-header"><h1>Pengaduan Saya</h1></div>
-<div class="list-wrapper" id="reportList">
-@forelse($reports as $report)
-@php($statusName = strtolower($statuses[$report->status_id]->status_name ?? 'sedang diproses'))
-@php($statusClass = str_contains($statusName, 'selesai') ? 'badge-selesai' : (str_contains($statusName, 'tolak') ? 'badge-ditolak' : 'badge-proses'))
-<a href="{{ route('complaints.user.show', $report->id) }}" class="report-link" aria-label="Lihat detail laporan {{ $report->judul }}">
-    <div class="report-card"><div class="report-info"><div class="report-id">#{{ strtolower(substr($report->id, 0, 8)) }}</div><div class="report-title">{{ $report->judul }}</div><div class="report-date">{{ optional($report->created_at)->locale('id')->translatedFormat('j F Y, H.i') }} WIB</div></div><div class="report-status"><span class="badge {{ $statusClass }}">{{ $statuses[$report->status_id]->status_name ?? 'Sedang Diproses' }}</span>@if($statusClass === 'badge-ditolak')<span class="reason-text">Status laporan ditolak oleh petugas.</span>@endif</div></div>
-</a>
-@empty
-<div class="empty-state"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10"/><path d="M8 9l4 4 4-4"/><path d="M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg><p>Belum ada pengaduan</p><a href="{{ route('complaints.user.create') }}" class="new-report">Buat Pengaduan</a></div>
-@endforelse
-</div>
+    @include('layouts.sidebar-user')
+
+    <header class="dashboard-topbar">
+        <button class="dashboard-menu-btn" id="menuBtn" type="button" aria-label="Buka menu" aria-expanded="false">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <span class="dashboard-topbar-title">E-Safe School</span>
+    </header>
+
+    <div class="page-header"><h1>Pengaduan Saya</h1></div>
+    <div class="list-wrapper" id="reportList">
+        @forelse($reports as $report)
+            @php($statusName = strtolower($statuses[$report->status_id]->status_name ?? 'sedang diproses'))
+            @php($statusClass = str_contains($statusName, 'selesai') ? 'badge-selesai' : (str_contains($statusName, 'tolak') ? 'badge-ditolak' : 'badge-proses'))
+            <a href="{{ route('complaints.user.show', $report->id) }}" class="report-link" aria-label="Lihat detail laporan {{ $report->judul }}">
+                <div class="report-card"><div class="report-info"><div class="report-id">#{{ strtolower(substr($report->id, 0, 8)) }}</div><div class="report-title">{{ $report->judul }}</div><div class="report-date">{{ optional($report->created_at)->locale('id')->translatedFormat('j F Y, H.i') }} WIB</div></div><div class="report-status"><span class="badge {{ $statusClass }}">{{ $statuses[$report->status_id]->status_name ?? 'Sedang Diproses' }}</span>@if($statusClass === 'badge-ditolak')<span class="reason-text">Status laporan ditolak oleh petugas.</span>@endif</div></div>
+            </a>
+        @empty
+            <div class="empty-state"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10"/><path d="M8 9l4 4 4-4"/><path d="M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg><p>Belum ada pengaduan</p><a href="{{ route('complaints.user.create') }}" class="new-report">Buat Pengaduan</a></div>
+        @endforelse
+    </div>
+
+    <script>
+        const menuButton = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const sidebarClose = document.getElementById('sidebarClose');
+
+        function toggleSidebar(forceOpen) {
+            const shouldOpen = typeof forceOpen === 'boolean'
+                ? forceOpen
+                : !sidebar.classList.contains('open');
+
+            sidebar.classList.toggle('open', shouldOpen);
+            sidebarOverlay.classList.toggle('show', shouldOpen);
+            menuButton.setAttribute('aria-expanded', String(shouldOpen));
+        }
+
+        menuButton.addEventListener('click', () => toggleSidebar());
+        sidebarOverlay.addEventListener('click', () => toggleSidebar(false));
+        sidebarClose.addEventListener('click', () => toggleSidebar(false));
+    </script>
 </body>
 </html>

@@ -63,9 +63,15 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-        $user->fill($request->safe()->except('profile_photo'));
+        $user->fill($request->safe()->except(['profile_photo', 'remove_photo']));
 
-        if ($request->hasFile('profile_photo')) {
+        if ($request->boolean('remove_photo')) {
+            if ($user->profile_photo) {
+                Storage::disk('public')->delete($user->profile_photo);
+            }
+
+            $user->profile_photo = null;
+        } elseif ($request->hasFile('profile_photo')) {
             if ($user->profile_photo) {
                 Storage::disk('public')->delete($user->profile_photo);
             }

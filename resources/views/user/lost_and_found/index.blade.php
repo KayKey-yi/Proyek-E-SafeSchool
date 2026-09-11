@@ -1,56 +1,372 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>E-Safe School - Lost &amp; Found</title>
-<style>
-  :root{--navy:#16233F;--navy-light:#1F3157;--navy-active:#2A4270;--bg:#F4F6FB;--card:#FFFFFF;--text-dark:#1A1F2B;--text-muted:#8A93A6;--blue:#2F5CFA;--orange-bg:#FDF0DE;--orange-text:#C8791A;--orange-dot:#E8A23D;--green-bg:#E4F6EA;--green-text:#1E8E4F;--green-dot:#33B36B;--border:#EDEFF4}
-  *{box-sizing:border-box}body{margin:0;color:var(--text-dark);background:#DDE2EC;display:flex;justify-content:center;padding:28px 12px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}.app{width:100%;max-width:1180px;height:720px;background:var(--card);border-radius:22px;overflow:hidden;display:flex;box-shadow:0 30px 60px rgba(20,30,60,.18)}
-  .sidebar{width:240px;flex-shrink:0;background:var(--navy);color:#C9D2E8;display:flex;flex-direction:column;padding:22px 16px}.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:600;font-size:15px;padding:6px 8px 28px;text-decoration:none}.brand svg{flex-shrink:0}.nav{display:flex;flex-direction:column;gap:4px}.nav-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:13.5px;text-decoration:none;color:#AEB8D1;cursor:pointer}.nav-item svg{opacity:.85;flex-shrink:0}.nav-item:hover{background:var(--navy-light);color:#fff}.nav-item.active{background:var(--navy-active);color:#fff;font-weight:600}.nav-item.active svg{opacity:1}.sidebar-bottom{margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)}
-  .main{flex:1;display:flex;flex-direction:column;min-width:0}.topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;border-bottom:1px solid var(--border)}.topbar h1{margin:0;font-size:19px;font-weight:700}.breadcrumb{margin:4px 0 0;font-size:12.5px;color:var(--text-muted)}.top-actions{display:flex;align-items:center;gap:18px}.icon-btn{width:34px;height:34px;border-radius:50%;background:#F1F3F9;display:flex;align-items:center;justify-content:center;color:#4C5670;flex-shrink:0}.user-chip{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text-dark)}.avatar{width:30px;height:30px;border-radius:50%;background:#E3E7F1;display:flex;align-items:center;justify-content:center;color:#6A7290}
-  .content{flex:1;overflow-y:auto;padding:22px 28px 28px}.toolbar{display:flex;align-items:center;gap:16px;margin-bottom:22px}.search{flex:1;display:flex;align-items:center;gap:10px;background:#F4F6FB;border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text-muted);font-size:13.5px}.search svg{flex-shrink:0}.search input{border:0;background:transparent;outline:0;font-size:13.5px;width:100%;color:var(--text-dark);font-family:inherit}.btn-primary{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:12px 20px;font-size:13.5px;font-weight:600;white-space:nowrap;cursor:pointer;box-shadow:0 8px 18px rgba(47,92,250,.28);text-decoration:none}.btn-primary:hover{background:#2A4FE0}
-  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.card{border:1px solid var(--border);border-radius:14px;padding:14px;background:#fff;transition:box-shadow .15s ease,transform .15s ease}.card:hover{box-shadow:0 10px 24px rgba(20,30,60,.08);transform:translateY(-2px)}.card[hidden]{display:none}.card-image{height:128px;border-radius:10px;background:#F4F6FB;display:flex;align-items:center;justify-content:center;margin-bottom:14px;overflow:hidden;color:#B7BFD4}.card-image img{width:100%;height:100%;object-fit:cover}.card h3{margin:0 0 6px;font-size:14.5px;font-weight:700}.card p{margin:0;font-size:12.5px;color:var(--text-muted)}.card .date{margin:2px 0 10px}.badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:20px}.badge .dot{width:6px;height:6px;border-radius:50%}.badge.pending{background:var(--orange-bg);color:var(--orange-text)}.badge.pending .dot{background:var(--orange-dot)}.badge.done{background:var(--green-bg);color:var(--green-text)}.badge.done .dot{background:var(--green-dot)}.empty-state{grid-column:1/-1;padding:70px 24px;border:1px dashed var(--border);border-radius:14px;color:var(--text-muted);text-align:center}.empty-state strong{display:block;margin:12px 0 6px;color:var(--text-dark)}.pager{display:flex;justify-content:flex-end;margin-top:18px}.pager a{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--text-dark);cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none}.pager a.disabled{pointer-events:none;opacity:.4}
-  @media(max-width:760px){body{padding:0}.app{min-height:100vh;height:auto;border-radius:0}.sidebar{width:72px;padding:22px 10px}.brand{justify-content:center;padding-left:0;padding-right:0}.brand span,.nav-item span{display:none}.nav-item{justify-content:center;padding:12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.topbar{padding:18px 16px}.content{padding:18px 16px 24px}.toolbar{align-items:stretch;flex-direction:column}.grid{grid-template-columns:1fr}.top-actions .icon-btn{display:none}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost &amp; Found - E-Safe School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/shared/app-user.css') }}">
+    <style>
+        :root {
+            --page-bg: #f4f6fb;
+            --card-bg: #ffffff;
+            --card-border: #e5e7eb;
+            --navy: #16215c;
+            --navy-soft: #eef1fb;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --blue: #2f6fed;
+            --green-bg: #e4f8ee;
+            --green-text: #1daa6b;
+            --orange-bg: #fff1df;
+            --orange-text: #d28818;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--page-bg);
+            color: var(--text);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        .dashboard-topbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--card-border);
+            background: #fff;
+        }
+
+        .dashboard-menu-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border: 0;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--navy);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .dashboard-menu-btn:hover {
+            background: #f1f5f9;
+        }
+
+        .dashboard-topbar-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1c1c1c;
+        }
+
+        .page-shell {
+            max-width: 1200px;
+            margin: 24px auto 42px;
+            padding: 0 24px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .eyebrow {
+            margin: 0 0 6px;
+            color: var(--blue);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 30px;
+            line-height: 1.2;
+        }
+
+        .primary-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 0 18px;
+            border: 0;
+            border-radius: 10px;
+            background: var(--navy);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 8px 18px rgba(22, 33, 92, 0.18);
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-height: 44px;
+            padding: 0 14px;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            background: #fff;
+            color: var(--muted);
+        }
+
+        .search input {
+            width: 100%;
+            border: 0;
+            outline: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .list-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .report-card {
+            display: block;
+            min-height: 100%;
+            padding: 14px;
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            background: var(--card-bg);
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .report-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+        }
+
+        .report-card[hidden] {
+            display: none;
+        }
+
+        .report-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 150px;
+            margin-bottom: 14px;
+            border-radius: 12px;
+            background: #f3f6fc;
+            overflow: hidden;
+            color: #b6bfd6;
+        }
+
+        .report-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .report-title {
+            margin: 0 0 6px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .report-text {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12.5px;
+        }
+
+        .report-date {
+            margin-top: 4px;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .status-badge .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.8;
+        }
+
+        .status-pending {
+            background: var(--orange-bg);
+            color: var(--orange-text);
+        }
+
+        .status-done {
+            background: var(--green-bg);
+            color: var(--green-text);
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            padding: 52px 20px;
+            border: 1px dashed var(--card-border);
+            border-radius: 16px;
+            background: #fff;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .empty-state strong {
+            display: block;
+            margin: 12px 0 8px;
+            color: var(--text);
+            font-size: 18px;
+        }
+
+        @media (max-width: 860px) {
+            .page-shell { padding: 0 18px; }
+            .list-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 600px) {
+            .dashboard-topbar { padding: 12px 16px; }
+            .page-shell { margin-top: 18px; }
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .primary-btn {
+                width: 100%;
+            }
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .list-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="app">
-  <aside class="sidebar">
-    <a href="{{ url('/') }}" class="brand"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span>E-Safe School</span></a>
-    <nav class="nav">
-      <a class="nav-item" href="{{ url('/') }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Dashboard</span></a>
-      <a class="nav-item" href="{{ url('/pengaduan') }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg><span>Pengaduan</span></a>
-      <a class="nav-item active" href="{{ route('item_reports.user.index') }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.4 14.5 16 10 4 20V4"/><path d="m17.5 6.5 4 4-4 4"/></svg><span>Lost &amp; Found</span></a>
-      <a class="nav-item" href="#"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span>Notifikasi</span></a>
-      <a class="nav-item" href="#"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Profil</span></a>
-      <a class="nav-item" href="#"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg><span>Pengaturan</span></a>
-    </nav>
-    <div class="sidebar-bottom"><a class="nav-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Keluar</span></a></div>
-  </aside>
-  <main class="main">
-    <div class="topbar"><div><h1>Lost &amp; Found</h1><p class="breadcrumb">Lost &amp; Found &gt; Daftar Barang</p></div><div class="top-actions"><div class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div><div class="user-chip"><div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>{{ auth()->user()->name ?? 'Siswa' }}</div></div></div>
-    <section class="content">
-      <div class="toolbar"><label class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="itemSearch" type="search" placeholder="Cari Barang...." aria-label="Cari barang"></label><a class="btn-primary" href="{{ route('item_reports.user.create') }}">Laporkan Barang</a></div>
-      <div class="grid">
-        @forelse($reports as $report)
-          @php
-            $statusName = strtolower($report->status?->status_name ?? 'diproses');
-            $isDone = str_contains($statusName, 'selesai') || str_contains($statusName, 'temu') || str_contains($statusName, 'kembali');
-            $statusLabel = str_contains($statusName, 'kembali') ? 'Sudah Dikembalikan' : ($isDone ? 'Sudah Ditemukan' : 'Menunggu Pemilik');
-          @endphp
-          <a href="{{ route('item_reports.user.show', $report->id) }}" style="text-decoration:none;color:inherit;display:block;">
-            <article class="card" data-search="{{ strtolower($report->nama_barang.' '.$report->lokasi.' '.($report->kategori_barang ?? '')) }}"><div class="card-image">@if($report->foto)<img src="{{ asset('storage/'.$report->foto) }}" alt="Foto {{ $report->nama_barang }}" loading="lazy">@else<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="m5 17 4-4 3 3 2-2 5 4"/></svg>@endif</div><h3>{{ $report->nama_barang }}</h3><p>{{ $report->lokasi ?: 'Lokasi belum dicatat' }}</p><p class="date">{{ \Illuminate\Support\Carbon::parse($report->tanggal ?? $report->created_at)->locale('id')->translatedFormat('d F Y') }}</p><span class="badge {{ $isDone ? 'done' : 'pending' }}"><span class="dot"></span>{{ $statusLabel }}</span></article>
-          </a>
-        @empty
-          <div class="empty-state"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 10h8M8 14h5"/></svg><strong>Belum ada laporan</strong><span>Laporan barang hilang atau ditemukan akan muncul di sini.</span></div>
-        @endforelse
-      </div>
-      @if($reports->count())<div class="pager"><a class="{{ $reports->hasMorePages() ? '' : 'disabled' }}" href="{{ $reports->nextPageUrl() ?: '#' }}" aria-label="Berikutnya"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a></div>@endif
-    </section>
-  </main>
-</div>
-<form id="logout-form" action="{{ route('logout') }}" method="POST" hidden>@csrf</form>
-<script>const search=document.getElementById('itemSearch');const cards=[...document.querySelectorAll('.card')];search?.addEventListener('input',event=>{const term=event.target.value.toLowerCase().trim();cards.forEach(card=>{card.hidden=term!==''&&!card.dataset.search.includes(term)})});</script>
+    @include('layouts.sidebar-user')
+
+    <header class="dashboard-topbar">
+        <button class="dashboard-menu-btn" id="menuBtn" type="button" aria-label="Buka menu" aria-expanded="false">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <span class="dashboard-topbar-title">E-Safe School</span>
+    </header>
+
+    <main class="page-shell">
+        <header class="page-header">
+            <div>
+                <p class="eyebrow">Riwayat barang</p>
+                <h1>Lost &amp; Found</h1>
+            </div>
+            <a class="primary-btn" href="{{ route('item_reports.user.create') }}">Laporkan Barang</a>
+        </header>
+
+        <div class="toolbar">
+            <label class="search" aria-label="Cari barang">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input id="itemSearch" type="search" placeholder="Cari barang...">
+            </label>
+        </div>
+
+        <section class="list-grid" aria-label="Daftar laporan Lost & Found">
+            @forelse($reports as $report)
+                @php
+                    $statusName = strtolower($report->status?->status_name ?? 'diproses');
+                    $isDone = str_contains($statusName, 'selesai') || str_contains($statusName, 'temu') || str_contains($statusName, 'kembali');
+                    $statusLabel = str_contains($statusName, 'kembali') ? 'Sudah Dikembalikan' : ($isDone ? 'Sudah Ditemukan' : 'Menunggu Pemilik');
+                @endphp
+
+                <a href="{{ route('item_reports.user.show', $report->id) }}" class="report-card" data-search="{{ strtolower($report->nama_barang.' '.$report->lokasi.' '.($report->kategori_barang ?? '')) }}">
+                    <div class="report-image">
+                        @if($report->foto)
+                            <img src="{{ asset('storage/'.$report->foto) }}" alt="Foto {{ $report->nama_barang }}" loading="lazy">
+                        @else
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="4" y="5" width="16" height="14" rx="2"></rect>
+                                <circle cx="9" cy="10" r="1.5"></circle>
+                                <path d="M5 17l4-4 3 3 2-2 5 4"></path>
+                            </svg>
+                        @endif
+                    </div>
+                    <h2 class="report-title">{{ $report->nama_barang }}</h2>
+                    <p class="report-text">{{ $report->lokasi ?: 'Lokasi belum dicatat' }}</p>
+                    <p class="report-text report-date">{{ \Illuminate\Support\Carbon::parse($report->tanggal ?? $report->created_at)->locale('id')->translatedFormat('d F Y') }}</p>
+                    <span class="status-badge {{ $isDone ? 'status-done' : 'status-pending' }}">
+                        <span class="dot"></span>
+                        {{ $statusLabel }}
+                    </span>
+                </a>
+            @empty
+                <div class="empty-state">
+                    <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="4" y="5" width="16" height="14" rx="2"></rect>
+                        <path d="M8 10h8M8 14h5"></path>
+                    </svg>
+                    <strong>Belum ada laporan</strong>
+                    <span>Laporan barang hilang atau ditemukan akan muncul di sini.</span>
+                </div>
+            @endforelse
+        </section>
+    </main>
+
+    <script>
+        const menuButton = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const sidebarClose = document.getElementById('sidebarClose');
+
+        function toggleSidebar(forceOpen) {
+            const shouldOpen = typeof forceOpen === 'boolean'
+                ? forceOpen
+                : !sidebar.classList.contains('open');
+
+            sidebar.classList.toggle('open', shouldOpen);
+            sidebarOverlay.classList.toggle('show', shouldOpen);
+            menuButton.setAttribute('aria-expanded', String(shouldOpen));
+        }
+
+        menuButton.addEventListener('click', () => toggleSidebar());
+        sidebarOverlay.addEventListener('click', () => toggleSidebar(false));
+        sidebarClose.addEventListener('click', () => toggleSidebar(false));
+
+        const searchInput = document.getElementById('itemSearch');
+        const cards = [...document.querySelectorAll('.report-card')];
+
+        searchInput?.addEventListener('input', (event) => {
+            const term = event.target.value.toLowerCase().trim();
+            cards.forEach((card) => {
+                const matches = term === '' || card.dataset.search.includes(term);
+                card.hidden = !matches;
+            });
+        });
+    </script>
 </body>
 </html>
