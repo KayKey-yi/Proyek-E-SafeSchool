@@ -267,8 +267,8 @@
             <button type="submit" class="btn-login">Login</button>
         </form>
 
-        <div class="register-link">
-            Belum punya akun? <a href="{{ route('user.register') }}">Daftar di sini</a>
+        <div class="forgot-password" style="text-align: center; margin-top: 4px; width: 100%;">
+            <a href="{{ route('user.password.request') }}" style="color: rgba(255,255,255,0.85); font-size: 12.5px; text-decoration: underline;">Lupa Password?</a>
         </div>
 
         <div class="footer-text">LAPOR &nbsp;–&nbsp; AMAN &nbsp;–&nbsp; TEMUKAN</div>
