@@ -256,7 +256,7 @@
 
             <div class="input-group">
                 <span class="icon" aria-hidden="true">&#128100;</span>
-                <input type="text" name="email" placeholder="Username atau Email" required autofocus autocomplete="username">
+                <input type="email" name="email" placeholder="Email" required autofocus autocomplete="email">
             </div>
 
             <div class="input-group">

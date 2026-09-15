@@ -28,7 +28,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string'],
+            'email' => ['required', 'email'],
             'password' => ['required', 'string'],
         ];
     }
@@ -43,10 +43,7 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         $identity = $this->string('email')->toString();
-        $user = \App\Models\User::query()
-            ->where('email', $identity)
-            ->orWhere('username', $identity)
-            ->first();
+        $user = \App\Models\User::query()->where('email', $identity)->first();
 
         if (! $user || ! Auth::attempt(['email' => $user->email, 'password' => $this->input('password')], $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());

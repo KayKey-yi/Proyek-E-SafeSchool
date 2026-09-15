@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('frontend.index', absolute: false));
+        return redirect()->intended(route('user.dashboard', absolute: false));
     }
 
     public function storeAdmin(LoginRequest $request): RedirectResponse
