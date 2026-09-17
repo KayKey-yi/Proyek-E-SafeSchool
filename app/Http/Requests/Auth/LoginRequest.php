@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Modules\Users\Models\Users;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -43,7 +44,7 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         $identity = $this->string('email')->toString();
-        $user = \App\Models\User::query()->where('email', $identity)->first();
+        $user = Users::query()->where('email', $identity)->first();
 
         if (! $user || ! Auth::attempt(['email' => $user->email, 'password' => $this->input('password')], $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());

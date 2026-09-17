@@ -107,10 +107,10 @@
             <div class="profile-details">
                 <div class="detail-row"><div class="detail-label">Nama</div><div class="detail-value">: {{ $user->name ?: '-' }}</div></div>
                 <div class="detail-row"><div class="detail-label">Username</div><div class="detail-value">: {{ $user->username ?: '-' }}</div></div>
-                <div class="detail-row"><div class="detail-label">Identitas</div><div class="detail-value">: {{ $user->identitas ?: '-' }}</div></div>
+                <div class="detail-row"><div class="detail-label">Jenis Kelamin</div><div class="detail-value">: {{ $user->jenis_kelamin === 'L' ? 'Laki-laki' : ($user->jenis_kelamin === 'P' ? 'Perempuan' : '-') }}</div></div>
                 <div class="detail-divider"></div>
                 <div class="detail-row"><div class="detail-label">Email</div><div class="detail-value">: {{ $user->email ?: '-' }}</div></div>
-                <div class="detail-row"><div class="detail-label">No. HP</div><div class="detail-value">: -</div></div>
+                <div class="detail-row"><div class="detail-label">No. HP</div><div class="detail-value">: {{ $user->no_hp ?: '-' }}</div></div>
             </div>
         </section>
 

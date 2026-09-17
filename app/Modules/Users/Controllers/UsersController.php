@@ -41,7 +41,7 @@ class UsersController extends Controller
 			'username' => ['label' => 'Username', 'type' => 'text', 'value' => old("username"), 'required' => true],
 			'email' => ['label' => 'Email', 'type' => 'text', 'value' => old("email"), 'required' => true],
 			'email_verified_at' => ['label' => 'Email Verified At', 'type' => 'text', 'value' => old("email_verified_at"), 'required' => false],
-			'password' => ['label' => 'Password', 'type' => 'text', 'value' => old("password"), 'required' => true],
+			'password' => ['label' => 'Password', 'type' => 'password', 'value' => old("password"), 'required' => true],
 			'identitas' => ['label' => 'Identitas', 'type' => 'text', 'value' => old("identitas"), 'required' => false],
 			'remember_token' => ['label' => 'Remember Token', 'type' => 'text', 'value' => old("remember_token"), 'required' => false],
 			
@@ -100,7 +100,7 @@ class UsersController extends Controller
 			'username' => ['label' => 'Username', 'type' => 'text', 'value' => $users->username, 'required' => true, 'id' => 'username'],
 			'email' => ['label' => 'Email', 'type' => 'text', 'value' => $users->email, 'required' => true, 'id' => 'email'],
 			'email_verified_at' => ['label' => 'Email Verified At', 'type' => 'text', 'value' => $users->email_verified_at, 'required' => false, 'id' => 'email_verified_at'],
-			'password' => ['label' => 'Password', 'type' => 'text', 'value' => $users->password, 'required' => true, 'id' => 'password'],
+			'password' => ['label' => 'Password', 'type' => 'password', 'value' => old("password"), 'required' => false, 'id' => 'password'],
 			'identitas' => ['label' => 'Identitas', 'type' => 'text', 'value' => $users->identitas, 'required' => false, 'id' => 'identitas'],
 			'remember_token' => ['label' => 'Remember Token', 'type' => 'text', 'value' => $users->remember_token, 'required' => false, 'id' => 'remember_token'],
 			
@@ -118,7 +118,7 @@ class UsersController extends Controller
 			'username' => 'required',
 			'email' => 'required',
 			'email_verified_at' => 'required',
-			'password' => 'required',
+			'password' => 'nullable',
 			'identitas' => 'required',
 			'remember_token' => 'required',
 			
@@ -129,7 +129,9 @@ class UsersController extends Controller
 		$users->username = $request->input("username");
 		$users->email = $request->input("email");
 		$users->email_verified_at = $request->input("email_verified_at");
-		$users->password = $request->input("password");
+		if ($request->filled('password')) {
+			$users->password = $request->input('password');
+		}
 		$users->identitas = $request->input("identitas");
 		$users->remember_token = $request->input("remember_token");
 		
