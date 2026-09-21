@@ -19,7 +19,8 @@ class PenggunaTableSeeder extends Seeder
         $pengguna->nama = 'Guntur Syahbudi Al Azizi';
         $pengguna->password = 'guntur-test-password';
         $pengguna->nisn = 1000000005;
-        $pengguna->nis = 100005;
+        $pengguna->nis = 10005;
+        $pengguna->nip = null;
         $pengguna->jenis_kelamin = 'L';
         $pengguna->kelas = '7C';
         $pengguna->no_hp = '081200000005';

@@ -256,7 +256,7 @@
 
             <div class="input-group">
                 <span class="icon" aria-hidden="true">&#128100;</span>
-                <input type="email" name="email" placeholder="Email" required autofocus autocomplete="email">
+                <input type="text" name="identitas" placeholder="NIS (5 digit), NISN (10 digit), atau NIP (8 digit)" value="{{ old('identitas') }}" required autofocus autocomplete="username">
             </div>
 
             <div class="input-group">
