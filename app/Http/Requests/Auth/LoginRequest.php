@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Modules\Pengguna\Models\Pengguna;
 use App\Modules\Users\Models\Users;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -39,14 +40,15 @@ class LoginRequest extends FormRequest
      *
      * @throws ValidationException
      */
-    public function authenticate(): void
+    public function authenticate(string $guard = 'web'): void
     {
         $this->ensureIsNotRateLimited();
 
         $identity = $this->string('email')->toString();
-        $user = Users::query()->where('email', $identity)->first();
+        $model = $guard === 'pengguna' ? Pengguna::class : Users::class;
+        $user = $model::query()->where('email', $identity)->first();
 
-        if (! $user || ! Auth::attempt(['email' => $user->email, 'password' => $this->input('password')], $this->boolean('remember'))) {
+        if (! $user || ! Auth::guard($guard)->attempt(['email' => $user->email, 'password' => $this->input('password')], $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
