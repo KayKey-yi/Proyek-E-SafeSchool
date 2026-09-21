@@ -6,10 +6,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'user.home')->name('frontend.index');
 
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth:pengguna'])->group(function(){
     Route::get('/user/dashboard', [DashboardController::class, 'userDashboard'])->name('user.dashboard');
     Route::get('/user/notifikasi', [DashboardController::class, 'userNotifications'])->name('user.notifications');
     Route::view('/user/pengaturan', 'user.settings')->name('user.settings');
+    Route::view('/laporanditerimaLF', 'user.lost_and_found.laporanterimaLF')->name('lost-found.report.received');
+});
+
+Route::middleware(['auth:web'])->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/role/set/{id_role}', [DashboardController::class,'changeRole'])->name('dashboard.change.role');
@@ -19,7 +23,6 @@ Route::middleware(['auth'])->group(function(){
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::view('/laporanditerimaLF', 'user.lost_and_found.laporanterimaLF')->name('lost-found.report.received');
 });
 
 require __DIR__.'/auth.php';
