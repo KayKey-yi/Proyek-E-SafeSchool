@@ -12,13 +12,15 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('guest')->group(function () {
+Route::middleware('guest:web')->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'createAdmin'])
         ->name('login');
 
     Route::post('login', [AuthenticatedSessionController::class, 'storeAdmin'])
         ->name('login.store');
+});
 
+Route::middleware('guest:pengguna')->group(function () {
     Route::get('user/login', [AuthenticatedSessionController::class, 'create'])
         ->name('user.login');
 
@@ -50,6 +52,9 @@ Route::middleware('guest')->group(function () {
         ->name('password.store');
 });
 
+Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
+
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
@@ -70,6 +75,4 @@ Route::middleware('auth')->group(function () {
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
 });

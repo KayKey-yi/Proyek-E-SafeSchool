@@ -3,12 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Modules\Item_reports\Controllers\Item_reportsController;
 
-Route::controller(Item_reportsController::class)->middleware(['web','auth'])->name('item_reports.')->group(function(){
+Route::controller(Item_reportsController::class)->middleware(['web','auth:pengguna'])->name('item_reports.')->group(function(){
 	Route::get('/lost-and-found', 'userIndex')->name('user.index');
 	Route::get('/lost-and-found/lapor', 'userCreate')->name('user.create');
 	Route::post('/lost-and-found/lapor', 'userStore')->name('user.store');
 	Route::get('/lost-and-found/{item_reports}', 'userShow')->name('user.show');
 	Route::get('/lost-and-found/diterima', 'userSuccess')->name('user.success');
+});
+
+Route::controller(Item_reportsController::class)->middleware(['web','auth:web'])->name('item_reports.')->group(function(){
 	Route::get('/item_reports', 'index')->name('index');
 	Route::get('/item_reports/data', 'data')->name('data.index');
 	Route::get('/item_reports/create', 'create')->name('create');

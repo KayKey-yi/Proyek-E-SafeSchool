@@ -28,6 +28,10 @@ class LogSuccessfullLogin
      */
     public function handle(Login $event)
     {
+        if ($event->guard !== 'web') {
+            return;
+        }
+
         $user = $event->user;
         try {
             // get user's role
