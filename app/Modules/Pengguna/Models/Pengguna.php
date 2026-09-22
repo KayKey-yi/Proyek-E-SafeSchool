@@ -20,7 +20,7 @@ class Pengguna extends Authenticatable
 		'password' => 'hashed',
 	];
 	protected $table      = 'pengguna';
-	protected $fillable   = ['*'];
+	protected $guarded    = [];
 
 	public function role(): BelongsTo
 	{
