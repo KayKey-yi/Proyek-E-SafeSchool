@@ -9,7 +9,7 @@
     <style>
         *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
 
-        /* ── Background gradient blob (senada home.blade.php) ── */
+        /* ── Background gradient blob ── */
         body{
             min-height:100vh;
             display:flex;
@@ -20,7 +20,6 @@
             overflow:hidden;
         }
 
-        /* Blob 1 – biru kuat kiri bawah */
         body::before{
             content:'';
             position:absolute;
@@ -31,7 +30,6 @@
             filter:blur(90px);
             opacity:.55;
         }
-        /* Blob 2 – cyan/putih kanan atas */
         body::after{
             content:'';
             position:absolute;
@@ -42,7 +40,6 @@
             filter:blur(80px);
             opacity:.7;
         }
-        /* Blob 3 – teal tengah */
         .blob-mid{
             position:absolute;
             width:300px; height:300px;
@@ -98,6 +95,7 @@
             align-items:center;
             justify-content:center;
             box-shadow:0 2px 8px rgba(30,58,138,.18);
+            overflow:hidden;
         }
         .brand-logo img{width:100%;height:100%;object-fit:contain}
         .brand-name{
@@ -118,10 +116,10 @@
         .panel-left .subtitle{
             font-size:13px;
             color:rgba(255,255,255,.8);
-            margin-bottom:32px;
+            margin-bottom:28px;
         }
 
-        /* Error / status */
+        /* Alert */
         .alert{
             padding:10px 14px;
             border-radius:10px;
@@ -132,7 +130,7 @@
         .alert-error{background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.35);color:#fff}
         .alert-success{background:rgba(16,185,129,.2);border:1px solid rgba(16,185,129,.35);color:#fff}
 
-        /* Input fields */
+        /* Fields */
         .field-label{
             display:block;
             font-size:10.5px;
@@ -170,7 +168,6 @@
             border-color:rgba(255,255,255,.75);
             background:rgba(255,255,255,.22);
         }
-        /* autofill override */
         .field-wrap input:-webkit-autofill,
         .field-wrap input:-webkit-autofill:focus{
             -webkit-box-shadow:0 0 0 1000px rgba(59,130,246,.45) inset !important;
@@ -178,7 +175,7 @@
             caret-color:#fff;
         }
 
-        /* Tombol login */
+        /* Button */
         .btn-login{
             width:100%;
             padding:14px;
@@ -231,7 +228,6 @@
             padding:40px 28px;
         }
 
-        /* Logo besar di panel kanan */
         .logo-big{
             width:130px; height:130px;
             border-radius:50%;
@@ -259,7 +255,6 @@
             line-height:1.6;
         }
 
-        /* Ilustrasi ikon shield */
         .shield-icon{
             width:80px; height:80px;
             display:flex;
@@ -271,16 +266,8 @@
             font-size:36px;
         }
 
-        /* Dots dekorasi */
-        .dots{
-            display:flex;
-            gap:8px;
-        }
-        .dots span{
-            width:8px; height:8px;
-            border-radius:50%;
-            background:#bfdbfe;
-        }
+        .dots{display:flex;gap:8px}
+        .dots span{width:8px;height:8px;border-radius:50%;background:#bfdbfe}
         .dots span:nth-child(2){background:#93c5fd}
         .dots span:nth-child(3){background:#60a5fa}
 
@@ -305,7 +292,6 @@
         {{-- ── PANEL KIRI: Form Login ── --}}
         <div class="panel-left">
 
-            {{-- Brand row --}}
             <div class="brand-row">
                 <div class="brand-logo">
                     <img src="{{ asset('images/logo-esafe.png') }}" alt="E-Safe School">
@@ -316,12 +302,10 @@
             <h1>MASUK</h1>
             <p class="subtitle">Masuk untuk melanjutkan ke E-Safe School</p>
 
-            {{-- Alert error --}}
             @if ($errors->any())
                 <div class="alert alert-error">{{ $errors->first() }}</div>
             @endif
 
-            {{-- Alert status (misal: reset password berhasil) --}}
             @if (session('status'))
                 <div class="alert alert-success">{{ session('status') }}</div>
             @endif
@@ -329,18 +313,18 @@
             <form method="POST" action="{{ route('user.login.store') }}">
                 @csrf
 
-                <label class="field-label" for="email">Email</label>
+                <label class="field-label" for="identitas">NIS / NISN / NIP</label>
                 <div class="field-wrap">
-                    <i class="fa-regular fa-envelope"></i>
+                    <i class="fa-solid fa-id-card"></i>
                     <input
-                        id="email"
-                        type="email"
-                        name="email"
-                        placeholder="email@sekolah.sch.id"
-                        value="{{ old('email') }}"
+                        id="identitas"
+                        type="text"
+                        name="identitas"
+                        placeholder="Masukkan NIS, NISN, atau NIP"
+                        value="{{ old('identitas') }}"
                         required
                         autofocus
-                        autocomplete="email"
+                        autocomplete="username"
                     >
                 </div>
 
@@ -365,34 +349,10 @@
             <div class="footer-tagline">Lapor &nbsp;–&nbsp; Aman &nbsp;–&nbsp; Temukan</div>
         </div>
 
-<<<<<<< HEAD
         {{-- ── PANEL KANAN: Ilustrasi ── --}}
         <div class="panel-right">
             <div class="logo-big">
                 <img src="{{ asset('images/logo-esafe.png') }}" alt="E-Safe School Logo">
-=======
-        <div class="welcome-text">Selamat Datang</div>
-        <div class="welcome-subtext">Masuk untuk melanjutkan ke E-SAFE School</div>
-
-        @if ($errors->any())
-            <div class="error-message">
-                {{ $errors->first() }}
-            </div>
-        @endif
-
-        @if (session('status'))
-            <div class="status-message">
-                {{ session('status') }}
-            </div>
-        @endif
-
-        <form method="POST" action="{{ route('user.login.store') }}">
-            @csrf
-
-            <div class="input-group">
-                <span class="icon" aria-hidden="true">&#128100;</span>
-                <input type="text" name="identitas" placeholder="NIS (5 digit), NISN (10 digit), atau NIP (8 digit)" value="{{ old('identitas') }}" required autofocus autocomplete="username">
->>>>>>> ac5f79cf2f7a94e4e57ecbfbbfe5fdb3b11532c3
             </div>
 
             <h2>E-Safe School</h2>
