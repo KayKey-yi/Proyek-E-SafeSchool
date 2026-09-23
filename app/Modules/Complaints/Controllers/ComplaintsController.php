@@ -64,7 +64,7 @@ class ComplaintsController extends Controller
 	public function userIndex()
 	{
 		$reports = Complaints::query()
-			->where('user_id', Auth::id())
+			->where('user_id', Auth::guard('pengguna')->id())
 			->latest('created_at')
 			->get();
 		$statuses = ReportStatuses::query()
@@ -78,7 +78,7 @@ class ComplaintsController extends Controller
 	public function userShow(string $complaints)
 	{
 		$report = Complaints::query()
-			->where('user_id', Auth::id())
+			->where('user_id', Auth::guard('pengguna')->id())
 			->whereKey($complaints)
 			->firstOrFail();
 
@@ -109,14 +109,14 @@ class ComplaintsController extends Controller
 		}
 
 		$complaint = new Complaints();
-		$complaint->user_id = Auth::id();
+		$complaint->user_id = Auth::guard('pengguna')->id();
 		$complaint->status_id = $status->id;
 		$complaint->judul = $data['kategori'];
 		$complaint->deskripsi = "Waktu kejadian: {$data['waktu']}\n\n{$data['deskripsi']}";
 		$complaint->lokasi = $data['lokasi'];
 		$complaint->foto = $request->hasFile('bukti') ? $request->file('bukti')->store('complaints', 'public') : null;
 		$complaint->is_anonymous = $request->boolean('anonim');
-		$complaint->created_by = Auth::id();
+		$complaint->created_by = Auth::guard('pengguna')->id();
 		$complaint->save();
 
 		return redirect()->route('complaints.user.success');

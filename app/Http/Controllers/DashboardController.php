@@ -18,7 +18,7 @@ class DashboardController extends Controller
 
     public function userDashboard()
     {
-        $userId = Auth::id();
+        $userId = Auth::guard('pengguna')->id();
         $statuses = ReportStatuses::query()->pluck('status_name', 'id');
         $complaints = Complaints::query()->where('user_id', $userId)->latest('created_at')->get();
         $itemReports = Item_reports::query()->where('user_id', $userId)->latest('created_at')->get();
@@ -54,7 +54,7 @@ class DashboardController extends Controller
 
     public function userNotifications()
     {
-        $userId = Auth::id();
+        $userId = Auth::guard('pengguna')->id();
         $statuses = ReportStatuses::query()->pluck('status_name', 'id');
 
         $notifications = collect(Complaints::query()

@@ -365,10 +365,34 @@
             <div class="footer-tagline">Lapor &nbsp;–&nbsp; Aman &nbsp;–&nbsp; Temukan</div>
         </div>
 
+<<<<<<< HEAD
         {{-- ── PANEL KANAN: Ilustrasi ── --}}
         <div class="panel-right">
             <div class="logo-big">
                 <img src="{{ asset('images/logo-esafe.png') }}" alt="E-Safe School Logo">
+=======
+        <div class="welcome-text">Selamat Datang</div>
+        <div class="welcome-subtext">Masuk untuk melanjutkan ke E-SAFE School</div>
+
+        @if ($errors->any())
+            <div class="error-message">
+                {{ $errors->first() }}
+            </div>
+        @endif
+
+        @if (session('status'))
+            <div class="status-message">
+                {{ session('status') }}
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('user.login.store') }}">
+            @csrf
+
+            <div class="input-group">
+                <span class="icon" aria-hidden="true">&#128100;</span>
+                <input type="text" name="identitas" placeholder="NIS (5 digit), NISN (10 digit), atau NIP (8 digit)" value="{{ old('identitas') }}" required autofocus autocomplete="username">
+>>>>>>> ac5f79cf2f7a94e4e57ecbfbbfe5fdb3b11532c3
             </div>
 
             <h2>E-Safe School</h2>

@@ -72,7 +72,7 @@ class Item_reportsController extends Controller
 		}
 
 		$item_reports = new Item_reports();
-		$item_reports->user_id = Auth::id();
+		$item_reports->user_id = Auth::guard('pengguna')->id();
 		$item_reports->status_id = $status->id;
 		$item_reports->jenis_laporan = $data['jenis_laporan'];
 		$item_reports->nama_barang = $data['nama_barang'];
@@ -84,7 +84,7 @@ class Item_reportsController extends Controller
 		$item_reports->tanggal = $data['tanggal'];
 		$item_reports->foto = $request->hasFile('foto') ? $request->file('foto')->store('lost_and_found', 'public') : null;
 		$item_reports->is_anonymous = $request->boolean('is_anonymous');
-		$item_reports->created_by = Auth::id();
+		$item_reports->created_by = Auth::guard('pengguna')->id();
 		$item_reports->save();
 
 		return redirect()->route('item_reports.user.success');
@@ -93,7 +93,7 @@ class Item_reportsController extends Controller
 	public function userShow(string $item_reports)
 	{
 		$report = Item_reports::query()
-			->where('user_id', Auth::id())
+			->where('user_id', Auth::guard('pengguna')->id())
 			->whereKey($item_reports)
 			->firstOrFail();
 

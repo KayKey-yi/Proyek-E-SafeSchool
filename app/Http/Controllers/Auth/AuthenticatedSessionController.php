@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $request->authenticate('pengguna');
 
         $request->session()->regenerate();
 
@@ -59,12 +59,20 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        $redirectRoute = '/';
+
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+            $redirectRoute = route('login');
+        } elseif (Auth::guard('pengguna')->check()) {
+            Auth::guard('pengguna')->logout();
+            $redirectRoute = route('user.login');
+        }
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect($redirectRoute);
     }
 }

@@ -44,8 +44,9 @@ class PenggunaController extends Controller
 			'nama' => ['label' => 'Nama', 'type' => 'text', 'value' => old("nama"), 'required' => true],
 			'email' => ['label' => 'Email', 'type' => 'text', 'value' => old("email"), 'required' => true],
 			'password' => ['label' => 'Password', 'type' => 'text', 'value' => old("password"), 'required' => true],
-			'nisn' => ['label' => 'Nisn', 'type' => 'number', 'value' => old("nisn"), 'required' => true],
-			'nis' => ['label' => 'Nis', 'type' => 'number', 'value' => old("nis"), 'required' => true],
+			'nisn' => ['label' => 'Nisn', 'type' => 'text', 'value' => old("nisn"), 'required' => false],
+			'nis' => ['label' => 'Nis', 'type' => 'text', 'value' => old("nis"), 'required' => false],
+			'nip' => ['label' => 'Nip', 'type' => 'text', 'value' => old("nip"), 'required' => false],
 			'jenis_kelamin' => ['label' => 'Jenis Kelamin', 'type' => 'text', 'value' => old("jenis_kelamin"), 'required' => false],
 			'kelas' => ['label' => 'Kelas', 'type' => 'text', 'value' => old("kelas"), 'required' => false],
 			'no_hp' => ['label' => 'No Hp', 'type' => 'text', 'value' => old("no_hp"), 'required' => true],
@@ -64,8 +65,9 @@ class PenggunaController extends Controller
 			'nama' => 'required',
 			'email' => 'required',
 			'password' => 'required',
-			'nisn' => 'required',
-			'nis' => 'required',
+			'nisn' => 'nullable|digits:10',
+			'nis' => 'nullable|digits:5',
+			'nip' => 'nullable|digits:8',
 			'jenis_kelamin' => 'required',
 			'kelas' => 'required',
 			'no_hp' => 'required',
@@ -80,6 +82,7 @@ class PenggunaController extends Controller
 		$pengguna->password = $request->input("password");
 		$pengguna->nisn = $request->input("nisn");
 		$pengguna->nis = $request->input("nis");
+		$pengguna->nip = $request->input("nip");
 		$pengguna->jenis_kelamin = $request->input("jenis_kelamin");
 		$pengguna->kelas = $request->input("kelas");
 		$pengguna->no_hp = $request->input("no_hp");
@@ -113,8 +116,9 @@ class PenggunaController extends Controller
 			'nama' => ['label' => 'Nama', 'type' => 'text', 'value' => $pengguna->nama, 'required' => true, 'id' => 'nama'],
 			'email' => ['label' => 'Email', 'type' => 'text', 'value' => $pengguna->email, 'required' => true, 'id' => 'email'],
 			'password' => ['label' => 'Password', 'type' => 'text', 'value' => $pengguna->password, 'required' => true, 'id' => 'password'],
-			'nisn' => ['label' => 'Nisn', 'type' => 'number', 'value' => $pengguna->nisn, 'required' => true, 'id' => 'nisn'],
-			'nis' => ['label' => 'Nis', 'type' => 'number', 'value' => $pengguna->nis, 'required' => true, 'id' => 'nis'],
+			'nisn' => ['label' => 'Nisn', 'type' => 'text', 'value' => $pengguna->nisn, 'required' => false, 'id' => 'nisn'],
+			'nis' => ['label' => 'Nis', 'type' => 'text', 'value' => $pengguna->nis, 'required' => false, 'id' => 'nis'],
+			'nip' => ['label' => 'Nip', 'type' => 'text', 'value' => $pengguna->nip, 'required' => false, 'id' => 'nip'],
 			'jenis_kelamin' => ['label' => 'Jenis Kelamin', 'type' => 'text', 'value' => $pengguna->jenis_kelamin, 'required' => false, 'id' => 'jenis_kelamin'],
 			'kelas' => ['label' => 'Kelas', 'type' => 'text', 'value' => $pengguna->kelas, 'required' => false, 'id' => 'kelas'],
 			'no_hp' => ['label' => 'No Hp', 'type' => 'text', 'value' => $pengguna->no_hp, 'required' => true, 'id' => 'no_hp'],
@@ -134,8 +138,9 @@ class PenggunaController extends Controller
 			'nama' => 'required',
 			'email' => 'required',
 			'password' => 'required',
-			'nisn' => 'required',
-			'nis' => 'required',
+			'nisn' => 'nullable|digits:10',
+			'nis' => 'nullable|digits:5',
+			'nip' => 'nullable|digits:8',
 			'jenis_kelamin' => 'required',
 			'kelas' => 'required',
 			'no_hp' => 'required',
@@ -150,6 +155,7 @@ class PenggunaController extends Controller
 		$pengguna->password = $request->input("password");
 		$pengguna->nisn = $request->input("nisn");
 		$pengguna->nis = $request->input("nis");
+		$pengguna->nip = $request->input("nip");
 		$pengguna->jenis_kelamin = $request->input("jenis_kelamin");
 		$pengguna->kelas = $request->input("kelas");
 		$pengguna->no_hp = $request->input("no_hp");
