@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/shared/app-user.css') }}">
     <style>
-        :root { --page-bg:#eef2f7; --navy:#16214b; --muted:#8a93a6; --line:#e7ebf2; --blue:#2f6fed; --green-bg:#e4f8ee; --green:#1daa6b; --orange-bg:#fff1df; --orange:#e08a1f; }
+        :root { --page-bg:#eef2f7; --navy:#16214b; --muted:#8a93a6; --line:#e7ebf2; --blue:#2f6fed; --green-bg:#e4f8ee; --green:#1daa6b; --orange-bg:#fff1df; --orange:#e08a1f; --grey-bg:#eceef1; --grey:#5b6472; --blue-bg:#dfeafc; --blue-text:#3c6bcf; --red-bg:#fde8e8; --red:#dc2626; }
         * { box-sizing:border-box; }
         body { margin:0; min-height:100vh; background:var(--page-bg); color:var(--navy); font-family:"Segoe UI", Tahoma, sans-serif; }
         .dashboard-topbar { display:flex; align-items:center; gap:16px; padding:14px 24px; border-bottom:1px solid #e5e7eb; background:#fff; }
@@ -47,8 +47,10 @@
         .history-id, .history-date { color:var(--muted); font-size:11px; }
         .history-title { margin:4px 0; color:#20263a; font-size:14px; font-weight:700; }
         .status { padding:6px 13px; border-radius:8px; font-size:12px; font-weight:700; white-space:nowrap; }
+        .status.menunggu { background:var(--grey-bg); color:var(--grey); }
+        .status.proses { background:var(--blue-bg); color:var(--blue-text); }
         .status.finished { background:var(--green-bg); color:var(--green); }
-        .status.processing { background:var(--orange-bg); color:var(--orange); }
+        .status.ditolak { background:var(--red-bg); color:var(--red); }
         .empty-state { padding:42px 20px 34px; text-align:center; }
         .empty-icon { display:flex; align-items:center; justify-content:center; width:56px; height:56px; margin:0 auto 12px; border-radius:50%; background:var(--page-bg); color:var(--muted); font-size:22px; }
         .empty-state h3 { margin:0 0 6px; font-size:15px; }
@@ -121,7 +123,17 @@
                     @foreach($reports as $report)
                         @php
                             $status = $report['status'];
-                            $isFinished = in_array(strtolower($status), ['selesai', 'dikembalikan', 'ditemukan'], true);
+                            $statusLower = strtolower($status);
+
+                            if (in_array($statusLower, ['selesai', 'dikembalikan', 'ditemukan'], true) || str_contains($statusLower, 'finish') || str_contains($statusLower, 'done') || str_contains($statusLower, 'complete')) {
+                                $statusClass = 'finished';
+                            } elseif (str_contains($statusLower, 'tolak') || str_contains($statusLower, 'reject')) {
+                                $statusClass = 'ditolak';
+                            } elseif (str_contains($statusLower, 'proses') || str_contains($statusLower, 'process')) {
+                                $statusClass = 'proses';
+                            } else {
+                                $statusClass = 'menunggu';
+                            }
                         @endphp
                     <article class="history-item">
                         <div>
@@ -129,7 +141,7 @@
                             <div class="history-title">{{ $report['title'] }}</div>
                             <div class="history-date">{{ $report['type'] }} · {{ $report['created_at']?->locale('id')->translatedFormat('d F Y, H.i') ?? 'Tanggal tidak tersedia' }} WIB</div>
                         </div>
-                        <span class="status {{ $isFinished ? 'finished' : 'processing' }}">{{ $status }}</span>
+                        <span class="status {{ $statusClass }}">{{ $status }}</span>
                     </article>
                     @endforeach
                 </div>

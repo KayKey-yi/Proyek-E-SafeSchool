@@ -20,6 +20,10 @@
             --green-text: #1daa6b;
             --orange-bg: #fff1df;
             --orange-text: #d28818;
+            --grey-bg: #eceef1;
+            --grey-text: #5b6472;
+            --blue-bg: #dfeafc;
+            --blue-text: #3c6bcf;
         }
 
         * { box-sizing: border-box; }
@@ -91,7 +95,7 @@
 
         .page-header h1 {
             margin: 0;
-            font-size: 30px;
+            font-size: 22px;
             line-height: 1.2;
         }
 
@@ -218,11 +222,19 @@
             opacity: 0.8;
         }
 
+        /* Menunggu / Submitted / Summit -> abu-abu */
         .status-pending {
-            background: var(--orange-bg);
-            color: var(--orange-text);
+            background: var(--grey-bg);
+            color: var(--grey-text);
         }
 
+        /* Diproses / Being Processed -> biru */
+        .status-processing {
+            background: var(--blue-bg);
+            color: var(--blue-text);
+        }
+
+        /* Selesai / Finished -> hijau */
         .status-done {
             background: var(--green-bg);
             color: var(--green-text);
@@ -273,12 +285,7 @@
 <body>
     @include('layouts.sidebar-user')
 
-    <header class="dashboard-topbar">
-        <button class="dashboard-menu-btn" id="menuBtn" type="button" aria-label="Buka menu" aria-expanded="false">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-        <span class="dashboard-topbar-title">E-Safe School</span>
-    </header>
+    <x-navbar active="lost-found" />
 
     <main class="page-shell">
         <header class="page-header">
@@ -300,8 +307,18 @@
             @forelse($reports as $report)
                 @php
                     $statusName = strtolower($report->status?->status_name ?? 'diproses');
-                    $isDone = str_contains($statusName, 'selesai') || str_contains($statusName, 'temu') || str_contains($statusName, 'kembali');
-                    $statusLabel = str_contains($statusName, 'kembali') ? 'Sudah Dikembalikan' : ($isDone ? 'Sudah Ditemukan' : 'Menunggu Pemilik');
+
+                    if (str_contains($statusName, 'selesai') || str_contains($statusName, 'temu') || str_contains($statusName, 'kembali') || str_contains($statusName, 'finish') || str_contains($statusName, 'done') || str_contains($statusName, 'complete')) {
+                        $statusClass = 'status-done';
+                        $statusLabel = str_contains($statusName, 'kembali') ? 'Sudah Dikembalikan' : 'Sudah Ditemukan';
+                    } elseif (str_contains($statusName, 'proses') || str_contains($statusName, 'process')) {
+                        $statusClass = 'status-processing';
+                        $statusLabel = 'Sedang Diproses';
+                    } else {
+                        // Menunggu / Submitted / Summit / status lain yang belum dikenali
+                        $statusClass = 'status-pending';
+                        $statusLabel = 'Menunggu Pemilik';
+                    }
                 @endphp
 
                 <a href="{{ route('item_reports.user.show', $report->id) }}" class="report-card" data-search="{{ strtolower($report->nama_barang.' '.$report->lokasi.' '.($report->kategori_barang ?? '')) }}">
@@ -319,7 +336,7 @@
                     <h2 class="report-title">{{ $report->nama_barang }}</h2>
                     <p class="report-text">{{ $report->lokasi ?: 'Lokasi belum dicatat' }}</p>
                     <p class="report-text report-date">{{ \Illuminate\Support\Carbon::parse($report->tanggal ?? $report->created_at)->locale('id')->translatedFormat('d F Y') }}</p>
-                    <span class="status-badge {{ $isDone ? 'status-done' : 'status-pending' }}">
+                    <span class="status-badge {{ $statusClass }}">
                         <span class="dot"></span>
                         {{ $statusLabel }}
                     </span>

@@ -14,6 +14,8 @@
             --amber-text: #a16207;
             --red-bg: #fee2e2;
             --red-text: #dc2626;
+            --grey-bg: #eceef1;
+            --grey-text: #5b6472;
             --slate-50: #f5f7fb;
             --slate-100: #edf2f7;
             --slate-200: #dfe6ee;
@@ -136,8 +138,13 @@
             white-space: nowrap;
         }
 
+        /* Menunggu / Submitted / Summit -> abu-abu */
+        .badge-menunggu { background: var(--grey-bg); color: var(--grey-text); }
+        /* Diproses / Being Processed -> biru */
         .badge-proses { background: var(--blue-100); color: var(--blue-700); }
+        /* Selesai / Finished -> hijau */
         .badge-selesai { background: var(--green-bg); color: var(--green-text); }
+        /* Ditolak / Rejected -> merah */
         .badge-ditolak { background: var(--red-bg); color: var(--red-text); }
 
         .report-id {
@@ -273,6 +280,16 @@
             margin-top: 2px;
         }
 
+        .timeline-dot.pending {
+            background: var(--slate-400);
+            box-shadow: 0 0 0 2px rgba(148,163,184,0.15);
+        }
+
+        .timeline-dot.rejected {
+            background: var(--red-text);
+            box-shadow: 0 0 0 2px rgba(220,38,38,0.15);
+        }
+
         .timeline-content h4 {
             margin: 0;
             font-size: 14px;
@@ -347,12 +364,64 @@
 
     <h1 class="page-title">Detail Laporan Saya</h1>
 
+    @php
+        $statusNameRaw = $status?->status_name ?? 'Summit';
+        $statusNameLower = strtolower($statusNameRaw);
+
+        if (str_contains($statusNameLower, 'selesai') || str_contains($statusNameLower, 'finish') || str_contains($statusNameLower, 'done') || str_contains($statusNameLower, 'complete')) {
+            $statusClass = 'badge-selesai';
+            $statusStage = 'selesai';
+        } elseif (str_contains($statusNameLower, 'tolak') || str_contains($statusNameLower, 'reject')) {
+            $statusClass = 'badge-ditolak';
+            $statusStage = 'ditolak';
+        } elseif (str_contains($statusNameLower, 'proses') || str_contains($statusNameLower, 'process')) {
+            $statusClass = 'badge-proses';
+            $statusStage = 'diproses';
+        } else {
+            $statusClass = 'badge-menunggu';
+            $statusStage = 'menunggu';
+        }
+
+        $dikirimPada = optional($report->created_at)->locale('id')->translatedFormat('j F Y, H.i');
+        $diupdatePada = optional($report->updated_at)->locale('id')->translatedFormat('j F Y, H.i');
+
+        $timeline = [
+            [
+                'judul' => 'Laporan Telah Dikirim',
+                'waktu' => $dikirimPada,
+                'deskripsi' => 'Laporan kamu berhasil terkirim dan menunggu diproses oleh petugas.',
+                'done' => true,
+            ],
+        ];
+
+        if ($statusStage === 'ditolak') {
+            $timeline[] = [
+                'judul' => 'Laporan Ditolak',
+                'waktu' => $diupdatePada,
+                'deskripsi' => 'Laporan ini ditolak oleh petugas.',
+                'done' => true,
+                'rejected' => true,
+            ];
+        } else {
+            $timeline[] = [
+                'judul' => 'Sedang Diproses',
+                'waktu' => $diupdatePada,
+                'deskripsi' => 'Pihak sekolah sedang menindaklanjuti laporan ini.',
+                'done' => in_array($statusStage, ['diproses', 'selesai']),
+            ];
+            $timeline[] = [
+                'judul' => 'Laporan Selesai',
+                'waktu' => $diupdatePada,
+                'deskripsi' => 'Laporan telah diselesaikan sesuai tindak lanjut.',
+                'done' => $statusStage === 'selesai',
+            ];
+        }
+    @endphp
+
     <div class="content-grid">
         <section class="card">
             <div class="status-row">
-                @php($statusName = $status?->status_name ?? 'Sedang Diproses')
-                @php($statusClass = str_contains(strtolower($statusName), 'selesai') ? 'badge-selesai' : (str_contains(strtolower($statusName), 'tolak') ? 'badge-ditolak' : 'badge-proses'))
-                <span class="badge {{ $statusClass }}">{{ $statusName }}</span>
+                <span class="badge {{ $statusClass }}">{{ $statusNameRaw }}</span>
                 <span class="report-id">#{{ strtolower(substr($report->id, 0, 8)) }}</span>
             </div>
 
@@ -373,7 +442,7 @@
 
                 <div>
                     <h2 class="report-title">{{ $report->judul }}</h2>
-                    <p class="report-date">Dilaporkan pada {{ optional($report->created_at)->locale('id')->translatedFormat('j F Y, H.i') }} WIB</p>
+                    <p class="report-date">Dilaporkan pada {{ $dikirimPada }} WIB</p>
 
                     <div class="facts">
                         <div>
@@ -386,7 +455,7 @@
                         </div>
                         <div>
                             <span class="fact-label">Waktu Kejadian</span>
-                            <div class="fact-value">{{ optional($report->created_at)->locale('id')->translatedFormat('j F Y, H.i') }}</div>
+                            <div class="fact-value">{{ $dikirimPada }}</div>
                         </div>
                     </div>
                 </div>
@@ -400,19 +469,17 @@
 
         <aside class="card">
             <h3 style="margin:0 0 18px; font-size:16px; color:var(--slate-900);">Riwayat status laporan</h3>
-            @php($timeline = [
-                ['judul' => 'Laporan Telah Dikirim', 'waktu' => optional($report->created_at)->locale('id')->translatedFormat('j F Y, H.i'), 'deskripsi' => 'Laporan terkirim dan menunggu verifikasi.'],
-                ['judul' => 'Laporan Telah Diterima', 'waktu' => optional($report->updated_at)->locale('id')->translatedFormat('j F Y, H.i'), 'deskripsi' => 'Laporan telah diterima dan diverifikasi.'],
-                ['judul' => 'Sedang Ditindaklanjuti', 'waktu' => optional($report->updated_at)->locale('id')->translatedFormat('j F Y, H.i'), 'deskripsi' => 'Pihak sekolah sedang menindaklanjuti laporan.'],
-                ['judul' => 'Laporan Selesai', 'waktu' => optional($report->updated_at)->locale('id')->translatedFormat('j F Y, H.i'), 'deskripsi' => 'Laporan telah diselesaikan sesuai tindak lanjut.'],
-            ])
             <ul class="timeline">
                 @foreach($timeline as $item)
                     <li class="timeline-item">
-                        <span class="timeline-dot" aria-hidden="true"></span>
+                        <span class="timeline-dot {{ !$item['done'] ? 'pending' : '' }} {{ ($item['rejected'] ?? false) ? 'rejected' : '' }}" aria-hidden="true"></span>
                         <div class="timeline-content">
                             <h4>{{ $item['judul'] }}</h4>
-                            <time>{{ $item['waktu'] }} WIB</time>
+                            @if($item['done'])
+                                <time>{{ $item['waktu'] }} WIB</time>
+                            @else
+                                <time>Menunggu</time>
+                            @endif
                             <p>{{ $item['deskripsi'] }}</p>
                         </div>
                     </li>

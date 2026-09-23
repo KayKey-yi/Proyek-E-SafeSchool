@@ -16,6 +16,8 @@
             --blue-text: #3c6bcf;
             --green-bg: #dff5e8;
             --green-text: #2b875e;
+            --grey-bg: #eceef1;
+            --grey-text: #5b6472;
             --input-bg: #f3f3f3;
         }
 
@@ -29,45 +31,6 @@
         }
 
         a { color: inherit; text-decoration: none; }
-
-        .navbar {
-            min-height: 50px;
-            border-bottom: 1px solid #e8e8e8;
-            background: #fff;
-        }
-
-        .navbar .inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 14px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 24px;
-        }
-
-        .brand {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            color: #1d4ed8;
-            font-size: 15px;
-            font-weight: 700;
-        }
-
-        .brand svg { flex: 0 0 auto; }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 28px;
-            color: #222;
-            font-size: 13px;
-        }
-
-        .nav-links a { padding: 4px 0; }
-        .nav-links a:hover,
-        .nav-links a.active { color: #1d4ed8; }
 
         .dashboard-topbar {
             display: flex;
@@ -167,9 +130,15 @@
             font-weight: 700;
         }
 
+        /* Menunggu / Submitted / Summit -> abu-abu */
+        .badge-menunggu { background: var(--grey-bg); color: var(--grey-text); }
+        /* Diproses / Being Processed -> biru */
         .badge-proses { background: var(--blue-bg); color: var(--blue-text); }
+        /* Selesai / Finished -> hijau */
         .badge-selesai { background: var(--green-bg); color: var(--green-text); }
+        /* Ditolak / Rejected -> merah */
         .badge-ditolak { background: #fde8e8; color: #e33434; }
+
         .reason-text { color: #bdbdbd; font-size: 12px; text-align: right; }
 
         .empty-state {
@@ -200,20 +169,39 @@
 <body>
     @include('layouts.sidebar-user')
 
-    <header class="dashboard-topbar">
-        <button class="dashboard-menu-btn" id="menuBtn" type="button" aria-label="Buka menu" aria-expanded="false">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-        <span class="dashboard-topbar-title">E-Safe School</span>
-    </header>
+    <x-navbar active="pengaduan" />
 
     <div class="page-header"><h1>Pengaduan Saya</h1></div>
     <div class="list-wrapper" id="reportList">
         @forelse($reports as $report)
-            @php($statusName = strtolower($statuses[$report->status_id]->status_name ?? 'sedang diproses'))
-            @php($statusClass = str_contains($statusName, 'selesai') ? 'badge-selesai' : (str_contains($statusName, 'tolak') ? 'badge-ditolak' : 'badge-proses'))
+            @php
+                $statusName = strtolower($statuses[$report->status_id]->status_name ?? 'diproses');
+
+                if (str_contains($statusName, 'selesai') || str_contains($statusName, 'finish') || str_contains($statusName, 'done') || str_contains($statusName, 'complete')) {
+                    $statusClass = 'badge-selesai';
+                } elseif (str_contains($statusName, 'tolak') || str_contains($statusName, 'reject')) {
+                    $statusClass = 'badge-ditolak';
+                } elseif (str_contains($statusName, 'proses') || str_contains($statusName, 'process')) {
+                    $statusClass = 'badge-proses';
+                } else {
+                    // Menunggu / Submitted / Summit / status lain yang belum dikenali
+                    $statusClass = 'badge-menunggu';
+                }
+            @endphp
             <a href="{{ route('complaints.user.show', $report->id) }}" class="report-link" aria-label="Lihat detail laporan {{ $report->judul }}">
-                <div class="report-card"><div class="report-info"><div class="report-id">#{{ strtolower(substr($report->id, 0, 8)) }}</div><div class="report-title">{{ $report->judul }}</div><div class="report-date">{{ optional($report->created_at)->locale('id')->translatedFormat('j F Y, H.i') }} WIB</div></div><div class="report-status"><span class="badge {{ $statusClass }}">{{ $statuses[$report->status_id]->status_name ?? 'Sedang Diproses' }}</span>@if($statusClass === 'badge-ditolak')<span class="reason-text">Status laporan ditolak oleh petugas.</span>@endif</div></div>
+                <div class="report-card">
+                    <div class="report-info">
+                        <div class="report-id">#{{ strtolower(substr($report->id, 0, 8)) }}</div>
+                        <div class="report-title">{{ $report->judul }}</div>
+                        <div class="report-date">{{ optional($report->created_at)->locale('id')->translatedFormat('j F Y, H.i') }} WIB</div>
+                    </div>
+                    <div class="report-status">
+                        <span class="badge {{ $statusClass }}">{{ $statuses[$report->status_id]->status_name ?? 'Sedang Diproses' }}</span>
+                        @if($statusClass === 'badge-ditolak')
+                            <span class="reason-text">Status laporan ditolak oleh petugas.</span>
+                        @endif
+                    </div>
+                </div>
             </a>
         @empty
             <div class="empty-state"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10"/><path d="M8 9l4 4 4-4"/><path d="M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg><p>Belum ada pengaduan</p><a href="{{ route('complaints.user.create') }}" class="new-report">Buat Pengaduan</a></div>

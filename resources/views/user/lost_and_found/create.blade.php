@@ -355,7 +355,7 @@
 
             <div class="field">
                 <label for="merek">Merek</label>
-                <input type="text" id="merek" name="merek" value="{{ old('merek') }}" placeholder="Contoh: Apple, Samsung, Tidak Ada">
+                <input type="text" id="merek" name="merek" value="{{ old('merek') }}" placeholder="Contoh: Apple, Samsung, Lainnya">
                 @error('merek')
                     <div class="field-error">{{ $message }}</div>
                 @enderror

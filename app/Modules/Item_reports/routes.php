@@ -7,8 +7,8 @@ Route::controller(Item_reportsController::class)->middleware(['web','auth'])->na
 	Route::get('/lost-and-found', 'userIndex')->name('user.index');
 	Route::get('/lost-and-found/lapor', 'userCreate')->name('user.create');
 	Route::post('/lost-and-found/lapor', 'userStore')->name('user.store');
-	Route::get('/lost-and-found/{item_reports}', 'userShow')->name('user.show');
 	Route::get('/lost-and-found/diterima', 'userSuccess')->name('user.success');
+	Route::get('/lost-and-found/{item_reports}', 'userShow')->name('user.show');
 	Route::get('/item_reports', 'index')->name('index');
 	Route::get('/item_reports/data', 'data')->name('data.index');
 	Route::get('/item_reports/create', 'create')->name('create');

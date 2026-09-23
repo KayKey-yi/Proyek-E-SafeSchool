@@ -12,6 +12,10 @@
             --green-text: #15803d;
             --amber-bg: #fef3c7;
             --amber-text: #a16207;
+            --red-bg: #fee2e2;
+            --red-text: #dc2626;
+            --grey-bg: #eceef1;
+            --grey-text: #5b6472;
             --slate-50: #f5f7fb;
             --slate-100: #edf2f7;
             --slate-200: #dfe6ee;
@@ -134,9 +138,14 @@
             white-space: nowrap;
         }
 
+        /* Menunggu / Submitted / Summit -> abu-abu */
+        .badge-menunggu { background: var(--grey-bg); color: var(--grey-text); }
+        /* Diproses / Being Processed -> biru */
         .badge-proses { background: var(--blue-100); color: var(--blue-700); }
+        /* Selesai / Finished -> hijau */
         .badge-selesai { background: var(--green-bg); color: var(--green-text); }
-        .badge-ditolak { background: #fee2e2; color: #dc2626; }
+        /* Ditolak / Rejected -> merah */
+        .badge-ditolak { background: var(--red-bg); color: var(--red-text); }
 
         .report-id {
             color: var(--slate-400);
@@ -335,8 +344,17 @@
             <section class="card">
                 <div class="status-row">
                     @php
-                        $statusName = strtolower($status?->status_name ?? 'Diproses');
-                        $badgeClass = str_contains($statusName, 'selesai') ? 'badge-selesai' : (str_contains($statusName, 'tolak') ? 'badge-ditolak' : 'badge-proses');
+                        $statusName = strtolower($status?->status_name ?? 'summit');
+
+                        if (str_contains($statusName, 'selesai') || str_contains($statusName, 'temu') || str_contains($statusName, 'kembali') || str_contains($statusName, 'finish') || str_contains($statusName, 'done') || str_contains($statusName, 'complete')) {
+                            $badgeClass = 'badge-selesai';
+                        } elseif (str_contains($statusName, 'tolak') || str_contains($statusName, 'reject')) {
+                            $badgeClass = 'badge-ditolak';
+                        } elseif (str_contains($statusName, 'proses') || str_contains($statusName, 'process')) {
+                            $badgeClass = 'badge-proses';
+                        } else {
+                            $badgeClass = 'badge-menunggu';
+                        }
                     @endphp
                     <span class="badge {{ $badgeClass }}">{{ $status?->status_name ?? 'Diproses' }}</span>
                     <span class="report-id">#{{ strtolower(substr($report->id, 0, 8)) }}</span>

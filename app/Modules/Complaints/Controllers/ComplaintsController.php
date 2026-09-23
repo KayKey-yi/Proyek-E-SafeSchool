@@ -103,7 +103,7 @@ class ComplaintsController extends Controller
 			'anonim' => ['nullable', 'boolean'],
 		]);
 
-		$status = ReportStatuses::query()->first();
+		$status = ReportStatuses::query()->where('status_name', 'Diajukan')->first();
 		if (! $status) {
 			return back()->withInput()->withErrors(['kategori' => 'Status pengaduan belum tersedia.']);
 		}
@@ -192,7 +192,7 @@ class ComplaintsController extends Controller
 			'judul' => 'required',
 			'deskripsi' => 'required',
 			'lokasi' => 'required',
-			'foto' => 'required',
+			'foto' => 'nullable',
 			'is_anonymous' => 'required',
 			
 		]);

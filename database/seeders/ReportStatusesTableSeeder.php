@@ -10,7 +10,7 @@ class ReportStatusesTableSeeder extends Seeder
 {
     public function run(): void
     {
-        foreach (['Diproses', 'Selesai', 'Ditolak'] as $statusName) {
+        foreach (['Diajukan', 'Diproses', 'Selesai', 'Ditemukan', 'Dikembalikan'] as $statusName) {
             $status = DB::table('report_statuses')->where('status_name', $statusName)->first();
 
             if ($status) {

@@ -21,7 +21,7 @@ class Item_reportsController extends Controller
 	public function __construct(Log $log)
 	{
 		$this->log = $log;
-	}
+	}	
 
 	public function index(Request $request)
 	{
@@ -66,7 +66,7 @@ class Item_reportsController extends Controller
 			'is_anonymous' => ['nullable', 'boolean'],
 		]);
 
-		$status = ReportStatuses::query()->where('status_name', 'Diproses')->first();
+		$status = ReportStatuses::query()->where('status_name', 'Diajukan')->first();
 		if (! $status) {
 			return back()->withInput()->withErrors(['jenis_laporan' => 'Status laporan belum tersedia.']);
 		}
@@ -221,7 +221,7 @@ class Item_reportsController extends Controller
 			'ciri_ciri' => 'required',
 			'lokasi' => 'required',
 			'tanggal' => 'required',
-			'foto' => 'required',
+			'foto' => 'nullable',
 			'is_anonymous' => 'required',
 			
 		]);

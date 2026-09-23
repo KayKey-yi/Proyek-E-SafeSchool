@@ -14,6 +14,14 @@
             --muted: #94a0b8;
             --border: #e1e5ee;
             --accent: #3d5aef;
+            --grey-bg: #eceef1;
+            --grey-text: #5b6472;
+            --blue-bg: #dfeafc;
+            --blue-text: #3c6bcf;
+            --green-bg: #e4f6ea;
+            --green-text: #1f9254;
+            --red-bg: #fde8e8;
+            --red-text: #dc2626;
         }
 
         * { box-sizing: border-box; }
@@ -36,8 +44,11 @@
         .notification-card.pengaduan { border-left-color: #e6584a; }
         .notification-label { margin-bottom: 7px; color: #5b6478; font-size: 11px; font-weight: 700; letter-spacing: .3px; }
         .notification-message { font-size: 14px; line-height: 1.5; }
-        .status-badge { display: inline-block; margin-left: 5px; padding: 3px 10px; border-radius: 12px; background: #fff4de; color: #b57b12; font-size: 12px; font-weight: 600; }
-        .status-badge.finished { background: #e4f6ea; color: #1f9254; }
+        .status-badge { display: inline-block; margin-left: 5px; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+        .status-badge.menunggu { background: var(--grey-bg); color: var(--grey-text); }
+        .status-badge.proses { background: var(--blue-bg); color: var(--blue-text); }
+        .status-badge.finished { background: var(--green-bg); color: var(--green-text); }
+        .status-badge.ditolak { background: var(--red-bg); color: var(--red-text); }
         .notification-time { margin-top: 7px; color: var(--muted); font-size: 12px; }
         .empty-state { padding: 78px 20px; border: 1px dashed var(--border); border-radius: 14px; background: #fff; text-align: center; }
         .empty-state i { margin-bottom: 18px; color: #c3cbe0; font-size: 42px; }
@@ -78,13 +89,23 @@
             @forelse($notifications as $notification)
                 @php
                     $status = $notification['status'];
-                    $isFinished = in_array(strtolower($status), ['selesai', 'dikembalikan', 'ditemukan'], true);
+                    $statusLower = strtolower($status);
+
+                    if (in_array($statusLower, ['selesai', 'dikembalikan', 'ditemukan'], true) || str_contains($statusLower, 'finish') || str_contains($statusLower, 'done') || str_contains($statusLower, 'complete')) {
+                        $statusBadgeClass = 'finished';
+                    } elseif (str_contains($statusLower, 'tolak') || str_contains($statusLower, 'reject')) {
+                        $statusBadgeClass = 'ditolak';
+                    } elseif (str_contains($statusLower, 'proses') || str_contains($statusLower, 'process')) {
+                        $statusBadgeClass = 'proses';
+                    } else {
+                        $statusBadgeClass = 'menunggu';
+                    }
                 @endphp
                 <article class="notification-card {{ $notification['category'] }}" data-category="{{ $notification['category'] }}" data-search="{{ strtolower($notification['label'].' '.$notification['message'].' '.$status) }}">
                     <div class="notification-label">[ {{ $notification['label'] }} ]</div>
                     <div class="notification-message">
                         {{ $notification['message'] }} - Status:
-                        <span class="status-badge {{ $isFinished ? 'finished' : '' }}">{{ $status }}</span>
+                        <span class="status-badge {{ $statusBadgeClass }}">{{ $status }}</span>
                     </div>
                     <div class="notification-time">{{ $notification['created_at']?->locale('id')->diffForHumans() ?? 'Waktu tidak tersedia' }}</div>
                 </article>

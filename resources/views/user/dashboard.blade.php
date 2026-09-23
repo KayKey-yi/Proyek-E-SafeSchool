@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/shared/app-user.css') }}">
     <style>
-        :root{--blue-900:#16215c;--blue-700:#1d4ed8;--blue-100:#dbeafe;--page:#f4f6fb;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--green:#15803d;--green-bg:#dcfce7;--amber:#b45309;--amber-bg:#fef3c7}
+        :root{--blue-900:#16215c;--blue-700:#1d4ed8;--blue-100:#dbeafe;--page:#f4f6fb;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--green:#15803d;--green-bg:#dcfce7;--amber:#b45309;--amber-bg:#fef3c7;--grey-bg:#eceef1;--grey-text:#5b6472;--red-bg:#fee2e2;--red-text:#dc2626}
         body{background:var(--page);color:var(--text)}
         .dashboard-main{min-height:100vh;padding:32px 24px 48px}
         .dashboard-topbar{display:flex;align-items:center;gap:16px;padding:14px 24px;border-bottom:1px solid var(--border);background:#fff}
@@ -34,7 +34,11 @@
         .activity-list{padding:4px 22px 10px}.activity-item{display:flex;align-items:flex-start;gap:14px;padding:17px 0;border-bottom:1px solid #f0f1f4}.activity-item:last-child{border-bottom:0}
         .activity-icon{display:flex;align-items:center;justify-content:center;width:34px;height:34px;flex:0 0 34px;border-radius:9px;background:#f1f5f9;color:var(--blue-700)}
         .activity-content{min-width:0;flex:1}.activity-title{margin:0 0 4px;font-size:14px;font-weight:700;overflow-wrap:anywhere}.activity-meta{margin:0;color:var(--muted);font-size:12px}
-        .status{display:inline-block;padding:5px 9px;border-radius:999px;background:var(--amber-bg);color:var(--amber);font-size:11px;font-weight:700;white-space:nowrap}.status-finished{background:var(--green-bg);color:var(--green)}
+        .status{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}
+        .status-menunggu{background:var(--grey-bg);color:var(--grey-text)}
+        .status-proses{background:var(--blue-100);color:var(--blue-700)}
+        .status-finished{background:var(--green-bg);color:var(--green)}
+        .status-ditolak{background:var(--red-bg);color:var(--red-text)}
         .empty-state{padding:46px 22px;text-align:center;color:var(--muted);font-size:13px}.empty-state i{display:block;margin-bottom:12px;color:#9ca3af;font-size:28px}
         .tips-panel{padding:22px}.tips-panel h2{margin:0 0 16px;font-size:17px}.tip{display:flex;gap:12px;margin-top:15px}.tip i{width:20px;padding-top:2px;color:var(--blue-700)}.tip strong{display:block;margin-bottom:3px;font-size:13px}.tip p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
         @media(max-width:800px){.dashboard-header{display:block}.quick-actions{margin-top:18px}.dashboard-grid{grid-template-columns:1fr}}
@@ -76,11 +80,23 @@
                     <div class="panel-header"><h2>Aktivitas terbaru</h2><a class="panel-link" href="{{ route('complaints.user.index.short') }}">Lihat pengaduan</a></div>
                     <div class="activity-list">
                         @forelse($activities->take(8) as $activity)
-                            @php($isFinished = in_array(strtolower($activity['status']), ['selesai', 'dikembalikan', 'ditemukan'], true))
+                            @php
+                                $statusLower = strtolower($activity['status']);
+
+                                if (in_array($statusLower, ['selesai', 'dikembalikan', 'ditemukan'], true) || str_contains($statusLower, 'finish') || str_contains($statusLower, 'done') || str_contains($statusLower, 'complete')) {
+                                    $statusClass = 'status-finished';
+                                } elseif (str_contains($statusLower, 'tolak') || str_contains($statusLower, 'reject')) {
+                                    $statusClass = 'status-ditolak';
+                                } elseif (str_contains($statusLower, 'proses') || str_contains($statusLower, 'process')) {
+                                    $statusClass = 'status-proses';
+                                } else {
+                                    $statusClass = 'status-menunggu';
+                                }
+                            @endphp
                             <article class="activity-item">
                                 <div class="activity-icon"><i class="{{ $activity['type'] === 'Pengaduan' ? 'fa-solid fa-file-lines' : 'fa-solid fa-box-archive' }}"></i></div>
                                 <div class="activity-content"><p class="activity-title">{{ $activity['type'] }}: {{ $activity['title'] }}</p><p class="activity-meta">{{ $activity['created_at']?->translatedFormat('d F Y, H:i') ?? 'Tanggal tidak tersedia' }}</p></div>
-                                <span class="status {{ $isFinished ? 'status-finished' : '' }}">{{ $activity['status'] }}</span>
+                                <span class="status {{ $statusClass }}">{{ $activity['status'] }}</span>
                             </article>
                         @empty
                             <div class="empty-state"><i class="fa-regular fa-folder-open"></i>Belum ada aktivitas. Laporan yang kamu kirim akan tampil di sini.</div>

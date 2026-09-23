@@ -345,7 +345,6 @@
                     <option value="">-- Pilih Kategori --</option>
                     <option value="Bullying" {{ old('kategori') === 'Bullying' ? 'selected' : '' }}>Bullying</option>
                     <option value="Kekerasan" {{ old('kategori') === 'Kekerasan' ? 'selected' : '' }}>Kekerasan</option>
-                    <option value="Kehilangan Barang" {{ old('kategori') === 'Kehilangan Barang' ? 'selected' : '' }}>Kehilangan Barang</option>
                     <option value="Kerusakan Fasilitas" {{ old('kategori') === 'Kerusakan Fasilitas' ? 'selected' : '' }}>Kerusakan Fasilitas</option>
                     <option value="Lainnya" {{ old('kategori') === 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                 </select>
