@@ -11,6 +11,10 @@ Route::middleware(['auth:pengguna'])->group(function(){
     Route::get('/user/notifikasi', [DashboardController::class, 'userNotifications'])->name('user.notifications');
     Route::view('/user/pengaturan', 'user.settings')->name('user.settings');
     Route::view('/laporanditerimaLF', 'user.lost_and_found.laporanterimaLF')->name('lost-found.report.received');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::middleware(['auth:web'])->group(function(){
@@ -18,11 +22,6 @@ Route::middleware(['auth:web'])->group(function(){
 
     Route::get('/role/set/{id_role}', [DashboardController::class,'changeRole'])->name('dashboard.change.role');
     Route::get('/forcelogout', [DashboardController::class,'forceLogout'])->name('dashboard.force.logout');
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
 });
 
-require __DIR__.'/auth.php';
+require __DIR__.'/auth.php'; 

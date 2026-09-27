@@ -2,6 +2,7 @@
 
 namespace App\Modules\Pengguna\Models;
 
+use App\Helpers\Format;
 use App\Helpers\UsesUuid;
 use App\Modules\Role\Models\Role;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,6 +22,11 @@ class Pengguna extends Authenticatable
 	];
 	protected $table      = 'pengguna';
 	protected $guarded    = [];
+
+	public function initials()
+    {
+	return Format::inisial($this->nama);
+    }
 
 	public function role(): BelongsTo
 	{
