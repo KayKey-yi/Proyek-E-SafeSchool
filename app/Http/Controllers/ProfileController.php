@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Modules\Complaints\Models\Complaints;
 use App\Modules\Item_reports\Models\Item_reports;
+use App\Modules\Pengguna\Models\Pengguna;
 use App\Modules\report_statuses\Models\report_statuses as ReportStatuses;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -63,6 +64,27 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
+
+        if ($user instanceof Pengguna) {
+            if ($request->boolean('remove_photo')) {
+                if ($user->foto_profil) {
+                    Storage::disk('public')->delete($user->foto_profil);
+                }
+
+                $user->foto_profil = null;
+            } elseif ($request->hasFile('foto_profil')) {
+                if ($user->foto_profil) {
+                    Storage::disk('public')->delete($user->foto_profil);
+                }
+
+                $user->foto_profil = $request->file('foto_profil')->store('profile-photos', 'public');
+            }
+
+            $user->save();
+
+            return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        }
+
         $user->fill($request->safe()->except(['profile_photo', 'remove_photo']));
 
         if ($request->boolean('remove_photo')) {

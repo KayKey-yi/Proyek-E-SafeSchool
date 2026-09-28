@@ -73,42 +73,62 @@
                 <h1>PROFIL</h1>
                 <div class="profile-date">{{ now()->locale('id')->translatedFormat('l, j F Y') }}</div>
             </div>
-            <label class="search-box" aria-label="Cari">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="search" placeholder="Cari sesuatu...">
-            </label>
+            @unless($user instanceof \App\Modules\Pengguna\Models\Pengguna)
+                <label class="search-box" aria-label="Cari">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="search" placeholder="Cari sesuatu...">
+                </label>
+            @endunless
         </header>
 
         @if(session('status') === 'profile-updated')
             <div class="profile-alert">Profil berhasil diperbarui.</div>
         @endif
 
+        @php
+            $isPengguna = $user instanceof \App\Modules\Pengguna\Models\Pengguna;
+            $profileName = $isPengguna ? $user->nama : $user->name;
+            $photoField = $isPengguna ? 'foto_profil' : 'profile_photo';
+            $profilePhoto = $isPengguna ? $user->foto_profil : $user->profile_photo;
+            $roleName = $isPengguna ? strtolower($user->role?->role ?? '') : '';
+        @endphp
+
         <section class="profile-card" aria-label="Data diri">
             <div class="profile-identity">
                 <form class="photo-form" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                     @csrf
                     @method('patch')
-                    <input type="hidden" name="name" value="{{ $user->name }}">
+                    <input type="hidden" name="name" value="{{ $profileName }}">
                     <input type="hidden" name="email" value="{{ $user->email }}">
-                    <label for="profile_photo" class="avatar" @if($user->profile_photo) style="background-image:url('{{ asset('storage/'.$user->profile_photo) }}')" @endif>
-                        @unless($user->profile_photo){{ $user->initials() }}@endunless
+                    <label for="{{ $photoField }}" class="avatar" @if($profilePhoto) style="background-image:url('{{ asset('storage/'.$profilePhoto) }}')" @endif>
+                        @unless($profilePhoto){{ $user->initials() }}@endunless
                     </label>
-                    <input id="profile_photo" name="profile_photo" type="file" accept=".jpg,.jpeg,.png,.webp" hidden onchange="this.form.submit()">
+                    <input id="{{ $photoField }}" name="{{ $photoField }}" type="file" accept=".jpg,.jpeg,.png,.webp" hidden onchange="this.form.submit()">
                     <div class="photo-actions">
-                        <label for="profile_photo" class="photo-button">Ganti foto</label>
-                        @if($user->profile_photo)
+                        <label for="{{ $photoField }}" class="photo-button">Ganti foto</label>
+                        @if($profilePhoto)
                             <button type="submit" name="remove_photo" value="1" class="photo-button secondary">Hapus foto</button>
                         @endif
                     </div>
-                    @error('profile_photo')<span class="photo-error">{{ $message }}</span>@enderror
+                    @error($photoField)<span class="photo-error">{{ $message }}</span>@enderror
                 </form>
-                <div class="identity-name">{{ $user->name }}</div>
-                <div class="identity-contact">{{ $user->username ?: '-' }}</div>
+                <div class="identity-name">{{ $profileName }}</div>
+                @unless($isPengguna)
+                    <div class="identity-contact">{{ $user->username ?: '-' }}</div>
+                @endunless
                 <div class="identity-contact">{{ $user->email }}</div>
             </div>
             <div class="profile-details">
-                <div class="detail-row"><div class="detail-label">Nama</div><div class="detail-value">: {{ $user->name ?: '-' }}</div></div>
-                <div class="detail-row"><div class="detail-label">Username</div><div class="detail-value">: {{ $user->username ?: '-' }}</div></div>
+                <div class="detail-row"><div class="detail-label">Nama</div><div class="detail-value">: {{ $profileName ?: '-' }}</div></div>
+                @if($isPengguna && $roleName === 'siswa')
+                    <div class="detail-row"><div class="detail-label">NIS</div><div class="detail-value">: {{ $user->nis ?: '-' }}</div></div>
+                    <div class="detail-row"><div class="detail-label">NISN</div><div class="detail-value">: {{ $user->nisn ?: '-' }}</div></div>
+                    <div class="detail-row"><div class="detail-label">Kelas</div><div class="detail-value">: {{ $user->kelas ?: '-' }}</div></div>
+                @elseif($isPengguna && $roleName === 'guru')
+                    <div class="detail-row"><div class="detail-label">NIP</div><div class="detail-value">: {{ $user->nip ?: '-' }}</div></div>
+                @elseif(!$isPengguna)
+                    <div class="detail-row"><div class="detail-label">Username</div><div class="detail-value">: {{ $user->username ?: '-' }}</div></div>
+                @endif
                 <div class="detail-row"><div class="detail-label">Jenis Kelamin</div><div class="detail-value">: {{ $user->jenis_kelamin === 'L' ? 'Laki-laki' : ($user->jenis_kelamin === 'P' ? 'Perempuan' : '-') }}</div></div>
                 <div class="detail-divider"></div>
                 <div class="detail-row"><div class="detail-label">Email</div><div class="detail-value">: {{ $user->email ?: '-' }}</div></div>
