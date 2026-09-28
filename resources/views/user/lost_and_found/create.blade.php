@@ -28,54 +28,6 @@
             color: var(--text-dark);
         }
 
-        header.topbar {
-            background: #fff;
-            display: flex;
-            align-items: center;
-            padding: 14px 24px;
-            border-bottom: 1px solid #eee;
-            gap: 20px;
-        }
-
-        .menu-icon {
-            font-size: 20px;
-            cursor: pointer;
-            color: #333;
-            line-height: 0;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        .brand svg { flex-shrink: 0; }
-
-        nav.main-nav {
-            display: flex;
-            gap: 28px;
-            margin-left: 24px;
-            font-size: 14px;
-        }
-
-        nav.main-nav a {
-            text-decoration: none;
-            color: #444;
-            padding: 4px 0;
-            cursor: pointer;
-        }
-
-        nav.main-nav a.active {
-            color: var(--primary);
-            font-weight: 600;
-            border-bottom: 2px solid var(--primary);
-        }
-
         .page-title-bar {
             padding: 20px 32px 16px;
         }
@@ -289,7 +241,6 @@
         }
 
         @media (max-width: 640px) {
-            nav.main-nav { display: none; }
             main { padding: 0 16px; }
             form.card { padding: 20px; }
             .form-footer { flex-direction: column; align-items: stretch; }
@@ -298,20 +249,7 @@
     </style>
 </head>
 <body>
-    <header class="topbar">
-        <a href="{{ url('/') }}" class="brand">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L4 5v6c0 5.5 3.4 9.7 8 11 4.6-1.3 8-5.5 8-11V5l-8-3z" stroke="#2b2fa3" stroke-width="1.8" fill="none"/>
-                <path d="M9 12l2 2 4-4" stroke="#2b2fa3" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            E-Safe School
-        </a>
-        <nav class="main-nav">
-            <a href="{{ url('/') }}">Beranda</a>
-            <a href="{{ route('item_reports.user.create') }}" class="active">Lost & Found</a>
-            <a href="{{ route('complaints.user.index') }}">Pengaduan</a>
-        </nav>
-    </header>
+    <x-navbar active="lost-found" />
 
     <div class="page-title-bar">
         <h1>Lapor Lost & Found</h1>

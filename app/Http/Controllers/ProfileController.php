@@ -24,7 +24,7 @@ class ProfileController extends Controller
         $user = $request->user();
         $statuses = ReportStatuses::query()->pluck('status_name', 'id');
         $reports = collect(Complaints::query()
-            ->where('user_id', $user->id)
+            ->where('pengguna_id', $user->id)
             ->latest('created_at')
             ->get()
             ->map(function ($report) use ($statuses) {
@@ -37,7 +37,7 @@ class ProfileController extends Controller
                 ];
             }))
             ->concat(Item_reports::query()
-                ->where('user_id', $user->id)
+                ->where('pengguna_id', $user->id)
                 ->latest('created_at')
                 ->get()
                 ->map(function ($report) use ($statuses) {

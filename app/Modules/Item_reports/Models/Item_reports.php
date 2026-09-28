@@ -3,6 +3,7 @@
 namespace App\Modules\Item_reports\Models;
 
 use App\Helpers\UsesUuid;
+use App\Modules\Pengguna\Models\Pengguna;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -22,6 +23,11 @@ class Item_reports extends Model
 	public function user()
 	{
 		return $this->belongsTo(Users::class, 'user_id');
+	}
+
+	public function pengguna()
+	{
+		return $this->belongsTo(Pengguna::class, 'pengguna_id');
 	}
 
 	public function status()

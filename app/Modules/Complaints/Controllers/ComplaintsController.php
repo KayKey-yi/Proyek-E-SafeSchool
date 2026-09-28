@@ -25,7 +25,7 @@ class ComplaintsController extends Controller
 
 	public function index(Request $request)
 	{
-		$query = Complaints::query();
+		$query = Complaints::query()->with(['user', 'pengguna']);
 		if($request->has('search')){
 			$search = $request->get('search');
 			// $query->where('name', 'like', "%$search%");
@@ -64,7 +64,7 @@ class ComplaintsController extends Controller
 	public function userIndex()
 	{
 		$reports = Complaints::query()
-			->where('user_id', Auth::guard('pengguna')->id())
+			->where('pengguna_id', Auth::guard('pengguna')->id())
 			->latest('created_at')
 			->get();
 		$statuses = ReportStatuses::query()
@@ -78,7 +78,7 @@ class ComplaintsController extends Controller
 	public function userShow(string $complaints)
 	{
 		$report = Complaints::query()
-			->where('user_id', Auth::guard('pengguna')->id())
+			->where('pengguna_id', Auth::guard('pengguna')->id())
 			->whereKey($complaints)
 			->firstOrFail();
 
@@ -109,7 +109,7 @@ class ComplaintsController extends Controller
 		}
 
 		$complaint = new Complaints();
-		$complaint->user_id = Auth::guard('pengguna')->id();
+		$complaint->pengguna_id = Auth::guard('pengguna')->id();
 		$complaint->status_id = $status->id;
 		$complaint->judul = $data['kategori'];
 		$complaint->deskripsi = "Waktu kejadian: {$data['waktu']}\n\n{$data['deskripsi']}";
@@ -169,7 +169,7 @@ class ComplaintsController extends Controller
 		$ref_report_statuses = ReportStatuses::all()->pluck('status_name','id');
 		
 		$data['forms'] = array(
-			'user_id' => ['label' => 'User Id', 'type' => 'select', 'value' => $complaints->user_id, 'required' => true, 'options' => $ref_users->all(), 'class' => 'select2', 'id' => 'user_id'],
+			'user_id' => ['label' => 'User Id', 'type' => 'select', 'value' => $complaints->user_id, 'required' => false, 'options' => $ref_users->all(), 'class' => 'select2', 'id' => 'user_id'],
 			'status_id' => ['label' => 'Status Id', 'type' => 'select', 'value' => $complaints->status_id, 'required' => true, 'options' => $ref_report_statuses->all(), 'class' => 'select2', 'id' => 'status_id'],
 			'judul' => ['label' => 'Judul', 'type' => 'text', 'value' => $complaints->judul, 'required' => true, 'id' => 'judul'],
 			'deskripsi' => ['label' => 'Deskripsi', 'type' => 'textarea', 'value' => $complaints->deskripsi, 'required' => true, 'id' => 'deskripsi'],
@@ -187,7 +187,7 @@ class ComplaintsController extends Controller
 	public function update(Request $request, $id)
 	{
 		$this->validate($request, [
-			'user_id' => 'required',
+			'user_id' => 'nullable',
 			'status_id' => 'required',
 			'judul' => 'required',
 			'deskripsi' => 'required',
@@ -199,6 +199,9 @@ class ComplaintsController extends Controller
 
 		$complaints = Complaints::find($id);
 		$complaints->user_id = $request->input("user_id");
+		if ($request->filled('user_id')) {
+			$complaints->pengguna_id = null;
+		}
 		$complaints->status_id = $request->input("status_id");
 		$complaints->judul = $request->input("judul");
 		$complaints->deskripsi = $request->input("deskripsi");

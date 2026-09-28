@@ -3,8 +3,10 @@
 namespace App\Modules\Complaints\Models;
 
 use App\Helpers\UsesUuid;
-use Illuminate\Support\Facades\DB;
+use App\Modules\Pengguna\Models\Pengguna;
+use App\Modules\Users\Models\Users;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -17,5 +19,13 @@ class Complaints extends Model
 	protected $table      = 'complaints';
 	protected $fillable   = ['*'];
 
-	
+	public function user(): BelongsTo
+	{
+		return $this->belongsTo(Users::class, 'user_id');
+	}
+
+	public function pengguna(): BelongsTo
+	{
+		return $this->belongsTo(Pengguna::class, 'pengguna_id');
+	}
 }

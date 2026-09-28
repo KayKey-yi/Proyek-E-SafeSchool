@@ -44,7 +44,7 @@
                         <thead>
                             <tr>
                                 <th width="15">No</th>
-                                <td>User Id</td>
+								<td>Pelapor</td>
 								<td>Status Id</td>
 								<td>Jenis Laporan</td>
 								<td>Nama Barang</td>
@@ -65,7 +65,7 @@
                             @forelse ($data as $item)
                                 <tr>
                                     <td>{{ $no++ }}</td>
-                                    <td>{{ $item->user_id }}</td>
+									<td>{{ $item->pengguna?->nama ?? $item->user?->name ?? '-' }}</td>
 									<td>{{ $item->status_id }}</td>
 									<td>{{ $item->jenis_laporan }}</td>
 									<td>{{ $item->nama_barang }}</td>

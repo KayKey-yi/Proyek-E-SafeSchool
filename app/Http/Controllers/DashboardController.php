@@ -20,8 +20,8 @@ class DashboardController extends Controller
     {
         $userId = Auth::guard('pengguna')->id();
         $statuses = ReportStatuses::query()->pluck('status_name', 'id');
-        $complaints = Complaints::query()->where('user_id', $userId)->latest('created_at')->get();
-        $itemReports = Item_reports::query()->where('user_id', $userId)->latest('created_at')->get();
+        $complaints = Complaints::query()->where('pengguna_id', $userId)->latest('created_at')->get();
+        $itemReports = Item_reports::query()->where('pengguna_id', $userId)->latest('created_at')->get();
         $finishedStatuses = ['selesai', 'dikembalikan', 'ditemukan'];
 
         $activities = collect($complaints->map(function ($report) use ($statuses) {
@@ -58,7 +58,7 @@ class DashboardController extends Controller
         $statuses = ReportStatuses::query()->pluck('status_name', 'id');
 
         $notifications = collect(Complaints::query()
-            ->where('user_id', $userId)
+            ->where('pengguna_id', $userId)
             ->latest('created_at')
             ->get()
             ->map(function ($report) use ($statuses) {
@@ -71,7 +71,7 @@ class DashboardController extends Controller
                 ];
             }))
             ->concat(Item_reports::query()
-                ->where('user_id', $userId)
+                ->where('pengguna_id', $userId)
                 ->latest('created_at')
                 ->get()
                 ->map(function ($report) use ($statuses) {

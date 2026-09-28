@@ -37,48 +37,6 @@
 
         a { text-decoration: none; color: inherit; }
 
-        .topbar {
-            background: var(--white);
-            border-bottom: 1px solid var(--slate-200);
-        }
-
-        .topbar-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .brand {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            color: var(--blue-700);
-        }
-
-        .brand-mark {
-            width: 18px;
-            height: 18px;
-            display: inline-block;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            font-size: 14px;
-            color: var(--slate-500);
-            font-weight: 500;
-        }
-
-        .nav-links a.active,
-        .nav-links a:hover {
-            color: var(--blue-700);
-        }
-
         .page {
             max-width: 1100px;
             margin: 0 auto;
@@ -314,22 +272,7 @@
     </style>
 </head>
 <body>
-    <header class="topbar">
-        <div class="topbar-inner">
-            <a href="{{ route('frontend.index') }}" class="brand">
-                <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                    <path d="M9 12l2 2 4-4"/>
-                </svg>
-                <span>E-Safe School</span>
-            </a>
-            <nav class="nav-links">
-                <a href="{{ route('frontend.index') }}">Beranda</a>
-                <a href="{{ url('/lost-and-found') }}" class="active">Lost &amp; Found</a>
-                <a href="{{ route('complaints.user.index') }}">Pengaduan</a>
-            </nav>
-        </div>
-    </header>
+    <x-navbar active="lost-found" />
 
     <main class="page">
         <div class="breadcrumbs">
@@ -421,7 +364,7 @@
                         </div>
                         <div class="meta-item">
                             <span class="meta-label">Pelapor</span>
-                            <span class="meta-value">{{ $report->is_anonymous ? 'Anonim' : (auth()->user()->name ?? 'Saya') }}</span>
+                            <span class="meta-value">{{ $report->is_anonymous ? 'Anonim' : ($report->pengguna?->nama ?? 'Saya') }}</span>
                         </div>
                     </div>
                 </div>

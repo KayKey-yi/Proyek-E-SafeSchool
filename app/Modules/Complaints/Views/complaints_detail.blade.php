@@ -31,7 +31,7 @@
                 <div class="row">
                     <div class="col-lg-10 offset-lg-2">
                         <div class="row kt-detail-grid">
-                            <div class='col-lg-2'><p>User Id</p></div><div class='col-lg-10'><p class='fw-bold'>{{ $complaints->user_id }}</p></div>
+							<div class='col-lg-2'><p>Pelapor</p></div><div class='col-lg-10'><p class='fw-bold'>{{ $complaints->pengguna?->nama ?? $complaints->user?->name ?? '-' }}</p></div>
 									<div class='col-lg-2'><p>Status Id</p></div><div class='col-lg-10'><p class='fw-bold'>{{ $complaints->status_id }}</p></div>
 									<div class='col-lg-2'><p>Judul</p></div><div class='col-lg-10'><p class='fw-bold'>{{ $complaints->judul }}</p></div>
 									<div class='col-lg-2'><p>Deskripsi</p></div><div class='col-lg-10'><p class='fw-bold'>{{ $complaints->deskripsi }}</p></div>

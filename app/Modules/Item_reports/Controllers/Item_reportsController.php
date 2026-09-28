@@ -25,7 +25,7 @@ class Item_reportsController extends Controller
 
 	public function index(Request $request)
 	{
-		$query = Item_reports::query();
+		$query = Item_reports::query()->with(['user', 'pengguna']);
 		if($request->has('search')){
 			$search = $request->get('search');
 			// $query->where('name', 'like', "%$search%");
@@ -44,7 +44,8 @@ class Item_reportsController extends Controller
 	public function userIndex()
 	{
 		$reports = Item_reports::query()
-			->with(['status', 'user'])
+			->where('pengguna_id', Auth::guard('pengguna')->id())
+			->with('status')
 			->latest('created_at')
 			->paginate(10);
 
@@ -72,7 +73,6 @@ class Item_reportsController extends Controller
 		}
 
 		$item_reports = new Item_reports();
-		$item_reports->user_id = Auth::guard('pengguna')->id();
 		$item_reports->status_id = $status->id;
 		$item_reports->jenis_laporan = $data['jenis_laporan'];
 		$item_reports->nama_barang = $data['nama_barang'];
@@ -81,7 +81,7 @@ class Item_reportsController extends Controller
 		$item_reports->warna = $data['warna'];
 		$item_reports->ciri_ciri = $data['ciri_ciri'];
 		$item_reports->lokasi = $data['lokasi'];
-		$item_reports->tanggal = $data['tanggal'];
+		$item_reports->pengguna_id = Auth::guard('pengguna')->id();
 		$item_reports->foto = $request->hasFile('foto') ? $request->file('foto')->store('lost_and_found', 'public') : null;
 		$item_reports->is_anonymous = $request->boolean('is_anonymous');
 		$item_reports->created_by = Auth::guard('pengguna')->id();
@@ -93,7 +93,7 @@ class Item_reportsController extends Controller
 	public function userShow(string $item_reports)
 	{
 		$report = Item_reports::query()
-			->where('user_id', Auth::guard('pengguna')->id())
+			->where('pengguna_id', Auth::guard('pengguna')->id())
 			->whereKey($item_reports)
 			->firstOrFail();
 
@@ -101,7 +101,6 @@ class Item_reportsController extends Controller
 
 		return view('user.lost_and_found.detail', compact('report', 'status'));
 	}
-
 	public function userSuccess()
 	{
 		return view('user.lost_and_found.laporanterimaLF');
@@ -173,7 +172,7 @@ class Item_reportsController extends Controller
 
 	public function show(Request $request, Item_reports $item_reports)
 	{
-		$data['item_reports'] = $item_reports;
+		$data['item_reports'] = $item_reports->load(['user', 'pengguna']);
 
 		$text = 'melihat detail '.$this->title;//.' '.$item_reports->what;
 		$this->log($request, $text, ['item_reports.id' => $item_reports->id]);
@@ -188,7 +187,7 @@ class Item_reportsController extends Controller
 		$ref_report_statuses = ReportStatuses::all()->pluck('status_name','id');
 		
 		$data['forms'] = array(
-			'user_id' => ['label' => 'User Id', 'type' => 'select', 'value' => $item_reports->user_id, 'required' => true, 'options' => $ref_users->all(), 'class' => 'select2', 'id' => 'user_id'],
+			'user_id' => ['label' => 'User Id', 'type' => 'select', 'value' => $item_reports->user_id, 'required' => false, 'options' => $ref_users->all(), 'class' => 'select2', 'id' => 'user_id'],
 			'status_id' => ['label' => 'Status Id', 'type' => 'select', 'value' => $item_reports->status_id, 'required' => true, 'options' => $ref_report_statuses->all(), 'class' => 'select2', 'id' => 'status_id'],
 			'jenis_laporan' => ['label' => 'Jenis Laporan', 'type' => 'text', 'value' => $item_reports->jenis_laporan, 'required' => true, 'id' => 'jenis_laporan'],
 			'nama_barang' => ['label' => 'Nama Barang', 'type' => 'text', 'value' => $item_reports->nama_barang, 'required' => true, 'id' => 'nama_barang'],
@@ -211,7 +210,7 @@ class Item_reportsController extends Controller
 	public function update(Request $request, $id)
 	{
 		$this->validate($request, [
-			'user_id' => 'required',
+			'user_id' => 'nullable',
 			'status_id' => 'required',
 			'jenis_laporan' => 'required',
 			'nama_barang' => 'required',
@@ -228,6 +227,9 @@ class Item_reportsController extends Controller
 
 		$item_reports = Item_reports::find($id);
 		$item_reports->user_id = $request->input("user_id");
+		if ($request->filled('user_id')) {
+			$item_reports->pengguna_id = null;
+		}
 		$item_reports->status_id = $request->input("status_id");
 		$item_reports->jenis_laporan = $request->input("jenis_laporan");
 		$item_reports->nama_barang = $request->input("nama_barang");
